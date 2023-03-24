@@ -1,0 +1,163 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  outline-color: #e7b10a;
+  padding: 0;
+}
+
+:root {
+  --activity-content-height: 5px;
+}
+
+html,
+body {
+  min-height: 100vh;
+  width: 100vw;
+}
+
+body {
+  background-color: #2c3333;
+  overflow-x: hidden;
+  padding-block: 30px;
+}
+
+header {
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+.json-heading {
+  color: #e7b10a;
+  text-align: center;
+}
+
+p {
+  display: inline-block;
+}
+
+.main {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  justify-content: center;
+  margin-inline: auto;
+  max-width: 600px;
+  width: 100%;
+}
+
+#json-generator {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  padding: 20px;
+  width: 100%;
+}
+
+#json-generator h2 {
+  align-self: center;
+}
+
+#json-generator label {
+  font-weight: bold;
+}
+
+.activities-amount-container label {
+  font-size: 17px;
+}
+
+.activities {
+  border-top: 1px solid #323232;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  padding-top: 10px;
+}
+
+.activity {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  justify-content: center;
+}
+
+.activity::after {
+  background-color: #685c5c;
+  content: '';
+  height: 1px;
+  margin-inline: auto;
+  width: 100%;
+}
+
+.activity:last-child::after {
+  content: none;
+}
+
+.activity > div {
+  align-items: center;
+  display: flex;
+  gap: 5px;
+}
+
+.activity label {
+  color: #323232;
+  min-width: 65px;
+  text-align: center;
+}
+
+.activity-title,
+.activity-content {
+  border: 1px solid #222;
+  border-radius: 5px;
+  transition: all 0.2s ease-out;
+}
+
+.activity-title:focus,
+.activity-content:focus {
+  padding: 10px;
+}
+
+.activity-title {
+  padding: 5px 10px;
+  width: 100%;
+}
+
+.activity-content {
+  height: var(--activity-content-height);
+  overflow: hidden;
+  min-height: 50px;
+  max-height: 100px;
+  padding: 5px;
+  resize: none;
+  width: 100%;
+}
+
+.json-preview {
+  background-color: #1e1e1e;
+  border-radius: 3px;
+  color: #fff;
+  padding: 30px;
+  width: 100%;
+}
+
+.json-preview .json-heading {
+  margin-bottom: 20px;
+}
+
+.prop {
+  color: #00aaff;
+}
+
+.value.string {
+  color: #7ed321;
+}
+
+.value.nonstring {
+  color: #d19a66;
+}

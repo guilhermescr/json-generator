@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="assets/icons/custom-favicon.ico"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <title>JSON Generator</title>
+  </head>
+  <body>
+    <header class="header">
+      <h1 class="json-heading">{ JSON Generator }</h1>
+    </header>
+
+    <main class="main">
+      <form id="json-generator">
+        <h2>Edit JSON</h2>
+
+        <section class="activities-amount-container">
+          <label for="activitiesAmount">Amount of Activities:</label>
+          <select name="activitiesAmount" id="activitiesAmount">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+        </section>
+
+        <section class="activities">
+          <div class="activity">
+            <h3>Activity 1</h3>
+
+            <div>
+              <label for="activity1-title">Title:</label>
+              <input type="text" id="activity1-title" class="activity-title" />
+            </div>
+
+            <div>
+              <label for="activity1-content">Content:</label>
+              <textarea
+                id="activity1-content"
+                class="activity-content"
+              ></textarea>
+            </div>
+          </div>
+        </section>
+      </form>
+
+      <section class="json-preview">
+        <h2 class="json-heading">JSON Preview</h2>
+        <code>
+          <pre>
+<p class="prop">"itensParaFechar"</p>: {
+<p class="prop">"solicitação"</p>: <p class="value string">"1- Inserir o campo 'Responsável' no form de solicitação."</p>
+}</pre>
+        </code>
+      </section>
+    </main>
+
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>
