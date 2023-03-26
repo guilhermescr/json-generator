@@ -1,3 +1,5 @@
+import renderPropsLayer from './renderPropsLayers.mjs';
+
 const TOTAL_ACTIVITIES_AMOUNT = document.getElementById('activitiesAmount');
 const ACTIVITIES_CONTENT = document.querySelectorAll('.activity-content');
 const ACTIVITIES_CONTAINER = document.querySelector('.activities');
@@ -36,7 +38,27 @@ function renderActivities() {
   }
 }
 
-TOTAL_ACTIVITIES_AMOUNT.addEventListener('change', renderActivities);
+function addPropsInActivity(e, layerLevel = 2) {
+  const { name: activityIndex } = this;
+
+  const activity_content_container =
+    this.parentElement.parentElement.parentElement.nextElementSibling;
+
+  const activity_props_container =
+    this.parentElement.parentElement.parentElement.nextElementSibling
+      .nextElementSibling;
+
+  if (this.id.includes('no')) {
+    activity_content_container.classList.remove('hide');
+  } else {
+    activity_content_container.classList.add('hide');
+    let updatedActivityIndex = activityIndex.replace(
+      activityIndex.slice(activityIndex.search('-item')),
+      ''
+    );
+    renderPropsLayer(updatedActivityIndex, layerLevel, 1);
+  }
+}
 
 function resizeHeight() {
   const root = document.querySelector(':root');
@@ -51,6 +73,20 @@ function resizeHeight() {
     root.style.setProperty('--activity-content-height', 'auto');
   }
 }
+
+function addMorePropsListener(activityIndex) {
+  document
+    .querySelectorAll(`input[name="${activityIndex}-item"]`)
+    .forEach(morePropsInputRadio => {
+      morePropsInputRadio.addEventListener('click', addPropsInActivity);
+    });
+}
+
+document.body.onload = () => {
+  addMorePropsListener('a1');
+};
+
+TOTAL_ACTIVITIES_AMOUNT.addEventListener('change', renderActivities);
 
 ACTIVITIES_CONTENT.forEach(activity_content => {
   activity_content.addEventListener('input', resizeHeight);

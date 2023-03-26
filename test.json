@@ -1,0 +1,28 @@
+{
+  "a1n1": {
+    "a1n2p1": {
+      "a1n2p1n3p1": {
+        "a1n2p1n3p1n4p1": "test"
+      },
+      "a1n2p1n3p2": {
+        "a1n2p1n3p2n4p1": "test"
+      }
+    },
+    "a1n2p2": {
+      "a1n2p2n3p1": "test"
+    }
+  },
+  "a2n1": {
+    "a2n2p1": {
+      "a2n2p1n3p1": {
+        "a2n2p1n3p1n4p1": "test",
+        "a2n2p1n3p1n4p2": "test"
+      },
+      "a2n2p1n3p2": {
+        "a2n2p1n3p2n4p1": "test",
+        "a2n2p1n3p2n4p2": "test"
+      }
+    }
+  },
+  "a3n1": "test"
+}
