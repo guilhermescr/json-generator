@@ -21,48 +21,195 @@
       <form id="json-generator">
         <h2>Edit JSON</h2>
 
-        <section class="activities-amount-container">
-          <label for="activitiesAmount">Amount of Activities:</label>
-          <select name="activitiesAmount" id="activitiesAmount">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-          </select>
+        <section class="activities-basic-info">
+          <div>
+            <label for="activitiesAmount">Amount of Activities:</label>
+            <select name="activitiesAmount" id="activitiesAmount">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="activities-title">Initial Title:</label>
+            <input type="text" id="activities-title" />
+          </div>
         </section>
 
         <section class="activities">
           <div class="activity">
             <h3>Activity 1</h3>
 
-            <div>
+            <div class="activity-title-container">
               <label for="activity1-title">Title:</label>
               <input type="text" id="activity1-title" class="activity-title" />
             </div>
 
-            <div>
+            <div class="activity-moreItems-container">
+              <label for="activity1-moreItems">More items?</label>
+
+              <div class="more-items">
+                <div>
+                  <label for="activity1-moreItems-no">No</label>
+                  <input
+                    type="radio"
+                    name="activity1-item"
+                    id="activity1-moreItems-no"
+                    checked
+                  />
+                </div>
+
+                <div>
+                  <label for="activity1-moreItems-yes">Yes</label>
+                  <input
+                    type="radio"
+                    name="activity1-item"
+                    id="activity1-moreItems-yes"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="activity-content-container">
               <label for="activity1-content">Content:</label>
               <textarea
                 id="activity1-content"
                 class="activity-content"
               ></textarea>
             </div>
+
+            <div class="activity-props">
+              <div class="activity-prop-levels" id="activity1-n1">
+                <div id="activity1-n1-prop1">
+                  <h4>Prop 1 - Nº1</h4>
+
+                  <div class="activity-title-container">
+                    <label for="activity1-n1-prop1-title">Title:</label>
+                    <input
+                      type="text"
+                      id="activity1-n1-prop1-title"
+                      class="activity-title"
+                    />
+                  </div>
+
+                  <div class="activity-moreItems-container">
+                    <label for="activity1-n1-prop1-moreItems"
+                      >More items?</label
+                    >
+
+                    <div class="more-items">
+                      <div>
+                        <label for="activity1-n1-prop1-moreItems-no">No</label>
+                        <input
+                          type="radio"
+                          name="activity1-n1-prop1-item"
+                          id="activity1-n1-prop1-moreItems-no"
+                          checked
+                        />
+                      </div>
+
+                      <div>
+                        <label for="activity1-n1-prop1-moreItems-yes"
+                          >Yes</label
+                        >
+                        <input
+                          type="radio"
+                          name="activity1-n1-prop1-item"
+                          id="activity1-n1-prop1-moreItems-yes"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="activity-content-container" style="display: none">
+                    <label for="activity1-prop1-content">Content:</label>
+                    <textarea
+                      id="activity1-prop1-content"
+                      class="activity-content"
+                    ></textarea>
+                  </div>
+                </div>
+
+                <div class="more-props-container">
+                  <span class="more-props-level">A1</span>
+
+                  <button
+                    id="activity1-n1-add-more-props"
+                    class="add-more-props-button"
+                    type="button"
+                  >
+                    Add more props +
+                  </button>
+                </div>
+              </div>
+
+              <div class="activity-prop-levels" id="activity1-n2"></div>
+
+              <div class="activity-prop-levels" id="activity1-n3"></div>
+
+              <div class="activity-prop-levels" id="activity1-n4"></div>
+            </div>
           </div>
         </section>
       </form>
 
       <section class="json-preview">
+        <svg
+          id="clipboard-icon"
+          role="button"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M9 5H7C5.89543 5 5 5.89543 5 7V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V7C19 5.89543 18.1046 5 17 5H15"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M9 12H15"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M9 16H12"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+
         <h2 class="json-heading">JSON Preview</h2>
         <code>
           <pre>
-<p class="prop">"itensParaFechar"</p>: {
-<p class="prop">"solicitação"</p>: <p class="value string">"1- Inserir o campo 'Responsável' no form de solicitação."</p>
+<p class="prop">"initialTitle"</p>: {
+  <p class="prop">"activity1"</p>: {
+    <p class="prop">activity1N1Prop1</p>: {
+      <p class="prop">activity1N2Prop1</p>: {
+        <p class="prop">"activity1N3Prop1"</p>: {
+          <p class="prop">activity1N4Prop1</p>: {
+            <p class="prop">activity1N5Prop1</p>: <p class="value string">"1- Y."</p>
+          }
+        }
+      }
+    }
+  }
 }</pre>
         </code>
       </section>

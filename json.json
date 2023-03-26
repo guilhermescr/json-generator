@@ -1,0 +1,3 @@
+{
+  "copyJSONPreview": "document.getElementById('JSONPREVIEWDIV').innerText.replaceAll('\n', ' ');"
+}
