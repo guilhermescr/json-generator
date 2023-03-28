@@ -55,12 +55,29 @@ function addPropsInActivity(e, layerLevel = 2) {
     ''
   );
 
+  let propLayers = document.querySelectorAll('.activity-prop-levels');
+  let activityLayerLevel = activityIndex.match(/n[0-9]+/g);
+  let newestActivityLayerLevel =
+    activityLayerLevel[activityLayerLevel.length - 1];
+
+  let isNewLayer = false;
+
+  if (!propLayers.length) {
+    isNewLayer = true;
+  } else {
+    propLayers.forEach(activity_prop_level => {
+      if (!activity_prop_level.id.includes(newestActivityLayerLevel)) {
+      }
+    });
+  }
+
   if (this.id.includes('no')) {
     activity_content_container.classList.remove('hide');
+    console.log(activityIndex);
   } else {
     activity_content_container.classList.add('hide');
 
-    if (!document.querySelector('.activity-props').children.length) {
+    if (isNewLayer) {
       renderPropsLayer(updatedActivityIndex, layerLevel, 1);
     }
 
@@ -83,7 +100,6 @@ function resizeHeight() {
 }
 
 function addMoreItems(activityIndex) {
-  console.log(activityIndex);
   document
     .querySelectorAll(`input[name="${activityIndex}-item"]`)
     .forEach(morePropsInputRadio => {
@@ -92,7 +108,7 @@ function addMoreItems(activityIndex) {
 }
 
 document.body.onload = () => {
-  addMoreItems('a1');
+  addMoreItems('a1n1');
 };
 
 TOTAL_ACTIVITIES_AMOUNT.addEventListener('change', renderActivities);

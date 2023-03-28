@@ -3,7 +3,7 @@ import { addMoreItems } from './main.js';
 function renderPropsLayer(activityIndex, layerLevel, propIndex) {
   const propsLayer = document.createElement('div');
   propsLayer.classList.add('activity-prop-levels');
-  propsLayer.id = `${activityIndex}-n${layerLevel}`;
+  propsLayer.id = `${activityIndex}n${layerLevel}`;
 
   propsLayer.innerHTML = `
   <div id="${activityIndex}-n${layerLevel}-p${propIndex}">
