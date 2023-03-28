@@ -1,3 +1,5 @@
+import { addMoreItems } from './main.js';
+
 function renderPropsLayer(activityIndex, layerLevel, propIndex) {
   const propsLayer = document.createElement('div');
   propsLayer.classList.add('activity-prop-levels');
@@ -43,20 +45,18 @@ function renderPropsLayer(activityIndex, layerLevel, propIndex) {
     </div>
   </div>
 
-  <div class="more-props-container">
+  <button
+    id="${activityIndex}-n${layerLevel}-add-more-props"
+    class="add-more-props-button"
+    type="button"
+  >
     <span class="more-props-level">N2</span>
-
-    <button
-      id="${activityIndex}-n${layerLevel}-add-more-props"
-      class="add-more-props-button"
-      type="button"
-    >
-      Add more props +
-    </button>
-  </div>
+    Add more props +
+  </button>
   `;
 
   document.querySelector('.activity-props').appendChild(propsLayer);
+  addMoreItems(`${activityIndex}-n${layerLevel}-p${propIndex}`);
 }
 
 export default renderPropsLayer;

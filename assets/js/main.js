@@ -1,5 +1,7 @@
+import { addClickListenerToAddMorePropsButton } from './addMorePropsInPropLayer.js';
 import renderPropsLayer from './renderPropsLayers.mjs';
 
+const JSON_GENERATOR_CONTAINER = document.getElementById('json-generator');
 const TOTAL_ACTIVITIES_AMOUNT = document.getElementById('activitiesAmount');
 const ACTIVITIES_CONTENT = document.querySelectorAll('.activity-content');
 const ACTIVITIES_CONTAINER = document.querySelector('.activities');
@@ -48,15 +50,21 @@ function addPropsInActivity(e, layerLevel = 2) {
     this.parentElement.parentElement.parentElement.nextElementSibling
       .nextElementSibling;
 
+  let updatedActivityIndex = activityIndex.replace(
+    activityIndex.slice(activityIndex.search('-item')),
+    ''
+  );
+
   if (this.id.includes('no')) {
     activity_content_container.classList.remove('hide');
   } else {
     activity_content_container.classList.add('hide');
-    let updatedActivityIndex = activityIndex.replace(
-      activityIndex.slice(activityIndex.search('-item')),
-      ''
-    );
-    renderPropsLayer(updatedActivityIndex, layerLevel, 1);
+
+    if (!document.querySelector('.activity-props').children.length) {
+      renderPropsLayer(updatedActivityIndex, layerLevel, 1);
+    }
+
+    addClickListenerToAddMorePropsButton();
   }
 }
 
@@ -74,7 +82,8 @@ function resizeHeight() {
   }
 }
 
-function addMorePropsListener(activityIndex) {
+function addMoreItems(activityIndex) {
+  console.log(activityIndex);
   document
     .querySelectorAll(`input[name="${activityIndex}-item"]`)
     .forEach(morePropsInputRadio => {
@@ -83,7 +92,7 @@ function addMorePropsListener(activityIndex) {
 }
 
 document.body.onload = () => {
-  addMorePropsListener('a1');
+  addMoreItems('a1');
 };
 
 TOTAL_ACTIVITIES_AMOUNT.addEventListener('change', renderActivities);
@@ -91,3 +100,5 @@ TOTAL_ACTIVITIES_AMOUNT.addEventListener('change', renderActivities);
 ACTIVITIES_CONTENT.forEach(activity_content => {
   activity_content.addEventListener('input', resizeHeight);
 });
+
+export { addMoreItems, JSON_GENERATOR_CONTAINER };
