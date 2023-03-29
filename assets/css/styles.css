@@ -44,9 +44,11 @@ p {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  max-height: 384px;
-  overflow-y: auto;
+  max-height: 391px;
+  max-width: 601px;
   padding: 20px;
+  padding-bottom: 0;
+  position: relative;
   scroll-behavior: smooth;
   width: 100%;
 }
@@ -55,23 +57,76 @@ p {
   align-self: center;
 }
 
+.carousel-arrows {
+  cursor: default;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+
+.carousel-arrow-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  height: 25px;
+  width: 25px;
+}
+
+.carousel-arrow-button:hover svg {
+  fill: #bcbcbc;
+}
+
+.carousel-arrow-button:active svg {
+  fill: #bcbcbc;
+  opacity: 0.85;
+}
+
+.carousel-arrow-button:nth-child(1) {
+  margin-right: 5px;
+}
+
+.carousel-arrow-button svg {
+  fill: #ccc;
+  height: 100%;
+  width: 100%;
+}
+
+.carousel-arrow-button.carousel-arrow-button--active svg {
+  fill: #000;
+}
+
+.carousel-arrow-button.carousel-arrow-button--active:hover svg {
+  fill: #505050;
+}
+
 .activities-basic-info {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.activities-basic-info > div {
-  display: flex;
-  gap: 5px;
+#add-activities-button {
+  background-color: #323232;
+  border: none;
+  border-radius: 3px;
+  color: #fff;
+  cursor: pointer;
+  padding: 7px 10px;
+  transition: all 0.2s ease;
 }
 
-.activities-basic-info > div:nth-child(1) {
-  align-items: center;
+#add-activities-button:hover {
+  color: #e7b10a;
+}
+
+#add-activities-button:active {
+  opacity: 0.9;
 }
 
 .activities-basic-info > div:nth-child(2) {
+  display: flex;
   flex-direction: column;
+  gap: 5px;
 }
 
 .activities-basic-info label {
@@ -94,29 +149,39 @@ p {
 .activities {
   border-top: 1px solid #323232;
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  justify-content: center;
+  gap: 20px;
+  overflow-x: auto;
   padding-top: 10px;
+  scroll-behavior: smooth;
+}
+
+.activities::-webkit-scrollbar {
+  width: 0;
 }
 
 .activity {
   display: flex;
   flex-direction: column;
+  flex: 1 0 auto;
   gap: 15px;
-  justify-content: center;
-}
-
-.activity::after {
-  background-color: #685c5c;
-  content: '';
-  height: 1px;
-  margin-inline: auto;
+  max-width: 800px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
   width: 100%;
 }
 
-.activity:last-child::after {
-  content: none;
+.activity::-webkit-scrollbar {
+  width: 15px;
+}
+
+.activity::-webkit-scrollbar-track {
+  background: #494949;
+}
+
+.activity::-webkit-scrollbar-thumb {
+  background-color: #8a8686;
+  border-radius: 15px;
+  border: 1px solid #404040;
 }
 
 .activity h4 {

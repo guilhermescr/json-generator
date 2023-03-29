@@ -1,52 +1,57 @@
 import { addMoreItems } from './main.js';
 
-function renderPropsLayer(activityIndex, layerLevel, propIndex) {
+function renderPropsLayer(
+  activityIndex,
+  newLayer,
+  newLayerLevel,
+  activityPropsContainer
+) {
   const propsLayer = document.createElement('div');
   propsLayer.classList.add('activity-prop-levels');
-  propsLayer.id = `${activityIndex}n${layerLevel}`;
+  propsLayer.id = `${activityIndex}n${newLayerLevel}`;
 
   propsLayer.innerHTML = `
-  <div id="${activityIndex}-n${layerLevel}-p${propIndex}">
-    <h4>${activityIndex.toUpperCase()}N${layerLevel}P${propIndex}</h4>
+  <div id="${newLayer}">
+    <h4>${newLayer.toUpperCase()}</h4>
 
     <div class="activity-title-container">
-      <label for="${activityIndex}-n${layerLevel}-p${propIndex}-title">Title:</label>
-      <input type="text" id="${activityIndex}-n${layerLevel}-p${propIndex}-title" class="activity-title" />
+      <label for="${newLayer}-title">Title:</label>
+      <input type="text" id="${newLayer}-title" class="activity-title" />
     </div>
 
     <div class="activity-moreItems-container">
-      <label for="${activityIndex}-n${layerLevel}-p${propIndex}-moreItems">More items?</label>
+      <label for="${newLayer}-moreItems">More items?</label>
 
       <div class="more-items">
         <div>
-          <label for="${activityIndex}-n${layerLevel}-p${propIndex}-moreItems-no">No</label>
+          <label for="${newLayer}-moreItems-no">No</label>
           <input
             type="radio"
-            name="${activityIndex}-n${layerLevel}-p${propIndex}-item"
-            id="${activityIndex}-n${layerLevel}-p${propIndex}-moreItems-no"
+            name="${newLayer}-item"
+            id="${newLayer}-moreItems-no"
             checked
           />
         </div>
 
         <div>
-          <label for="${activityIndex}-n${layerLevel}-p${propIndex}-moreItems-yes">Yes</label>
+          <label for="${newLayer}-moreItems-yes">Yes</label>
           <input
             type="radio"
-            name="${activityIndex}-n${layerLevel}-p${propIndex}-item"
-            id="${activityIndex}-n${layerLevel}-p${propIndex}-moreItems-yes"
+            name="${newLayer}-item"
+            id="${newLayer}-moreItems-yes"
           />
         </div>
       </div>
     </div>
 
     <div class="activity-content-container">
-      <label for="${activityIndex}-n${layerLevel}-p${propIndex}-content">Content:</label>
-      <textarea id="${activityIndex}-n${layerLevel}-p${propIndex}-content" class="activity-content"></textarea>
+      <label for="${newLayer}-content">Content:</label>
+      <textarea id="${newLayer}-content" class="activity-content"></textarea>
     </div>
   </div>
 
   <button
-    id="${activityIndex}-n${layerLevel}-add-more-props"
+    id="${newLayer}-add-more-props"
     class="add-more-props-button"
     type="button"
   >
@@ -55,8 +60,8 @@ function renderPropsLayer(activityIndex, layerLevel, propIndex) {
   </button>
   `;
 
-  document.querySelector('.activity-props').appendChild(propsLayer);
-  addMoreItems(`${activityIndex}-n${layerLevel}-p${propIndex}`);
+  activityPropsContainer.appendChild(propsLayer);
+  addMoreItems(`${newLayer}`);
 }
 
 export default renderPropsLayer;

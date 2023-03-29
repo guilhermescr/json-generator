@@ -1,46 +1,68 @@
+import {
+  checkArrowClassState,
+  getActivityClientWidthForCarouselSlide
+} from './activitiesCarousel.js';
 import { addClickListenerToAddMorePropsButton } from './addMorePropsInPropLayer.js';
+import { getPreviousLayerLevel } from './layerMethods.mjs';
 import renderPropsLayer from './renderPropsLayers.mjs';
 
 const JSON_GENERATOR_CONTAINER = document.getElementById('json-generator');
-const TOTAL_ACTIVITIES_AMOUNT = document.getElementById('activitiesAmount');
-const ACTIVITIES_CONTENT = document.querySelectorAll('.activity-content');
+const ADD_ACTIVITY_BUTTON = document.getElementById('add-activities-button');
 const ACTIVITIES_CONTAINER = document.querySelector('.activities');
+const ACTIVITIES_CONTENT = document.querySelectorAll('.activity-content');
 
-function renderActivities() {
-  let chosenAmountOfActivities = this.value;
-  ACTIVITIES_CONTAINER.innerHTML = '';
+function addActivity() {
+  const ACTIVITY = document.createElement('div');
+  const ACTIVITY_INDEX = ACTIVITIES_CONTAINER.children.length + 1;
+  ACTIVITY.classList.add('activity');
 
-  for (
-    let activityIndex = 0;
-    activityIndex < chosenAmountOfActivities;
-    activityIndex++
-  ) {
-    const activity = document.createElement('div');
-    activity.classList.add('activity');
+  ACTIVITY.innerHTML = `
+    <h3>Activity ${ACTIVITY_INDEX}</h3>
 
-    activity.innerHTML = `
-    <h3>Activity ${activityIndex + 1}</h3>
-
-    <div>
-      <label for="activity${activityIndex + 1}-title">Title:</label>
-      <input type="text" id="activity${
-        activityIndex + 1
-      }-title" class="activity-title" />
+    <div class="activity-title-container">
+      <label for="a${ACTIVITY_INDEX}-title">Title:</label>
+      <input type="text" id="a${ACTIVITY_INDEX}-title" class="activity-title" />
     </div>
 
-    <div>
-      <label for="activity${activityIndex + 1}-content">Content:</label>
-      <textarea
-        id="activity${activityIndex + 1}-content"
-        class="activity-content"
-      ></textarea>
+    <div class="activity-moreItems-container">
+      <label for="a${ACTIVITY_INDEX}-moreItems">More items?</label>
+
+      <div class="more-items">
+        <div>
+          <label for="a${ACTIVITY_INDEX}-moreItems-no">No</label>
+          <input type="radio" name="a${ACTIVITY_INDEX}-item" id="a${ACTIVITY_INDEX}-moreItems-no" checked />
+        </div>
+
+        <div>
+          <label for="a${ACTIVITY_INDEX}-moreItems-yes">Yes</label>
+          <input type="radio" name="a${ACTIVITY_INDEX}-item" id="a${ACTIVITY_INDEX}-moreItems-yes" />
+        </div>
+      </div>
     </div>
+
+    <div class="activity-content-container">
+      <label for="a${ACTIVITY_INDEX}-content">Content:</label>
+      <textarea id="a${ACTIVITY_INDEX}-content" class="activity-content"></textarea>
+    </div>
+
+    <div class="activity-props hide"></div>
     `;
-    ACTIVITIES_CONTAINER.appendChild(activity);
-  }
+
+  ACTIVITIES_CONTAINER.appendChild(ACTIVITY);
+  ACTIVITIES_CONTAINER.scrollTo(ACTIVITIES_CONTAINER.scrollWidth, 0);
+  checkArrowClassState('right', ACTIVITIES_CONTAINER.scrollWidth);
+  addMoreItems(`a${ACTIVITY_INDEX}`);
 }
 
-function addPropsInActivity(e, layerLevel = 2) {
+function getActivityIndex(activity) {
+  activity = activity.match(/a[0-9]+/g);
+
+  if (activity) return activity[0];
+}
+
+function addPropsInActivity() {
+  console.log(this);
+
   const { name: activityIndex } = this;
 
   const activity_content_container =
@@ -50,36 +72,29 @@ function addPropsInActivity(e, layerLevel = 2) {
     this.parentElement.parentElement.parentElement.nextElementSibling
       .nextElementSibling;
 
-  let updatedActivityIndex = activityIndex.replace(
+  let previousLayer = activityIndex.replace(
     activityIndex.slice(activityIndex.search('-item')),
     ''
   );
+  let previousLayerLevel = getPreviousLayerLevel(previousLayer);
 
-  let propLayers = document.querySelectorAll('.activity-prop-levels');
-  let activityLayerLevel = activityIndex.match(/n[0-9]+/g);
-  let newestActivityLayerLevel =
-    activityLayerLevel[activityLayerLevel.length - 1];
-
-  let isNewLayer = false;
-
-  if (!propLayers.length) {
-    isNewLayer = true;
-  } else {
-    propLayers.forEach(activity_prop_level => {
-      if (!activity_prop_level.id.includes(newestActivityLayerLevel)) {
-      }
-    });
-  }
+  let newLayerLevel = previousLayerLevel + 1;
+  let newLayer = `${previousLayer}n${newLayerLevel}p1`;
 
   if (this.id.includes('no')) {
+    activity_props_container.classList.add('hide');
     activity_content_container.classList.remove('hide');
     console.log(activityIndex);
   } else {
     activity_content_container.classList.add('hide');
+    activity_props_container.classList.remove('hide');
 
-    if (isNewLayer) {
-      renderPropsLayer(updatedActivityIndex, layerLevel, 1);
-    }
+    renderPropsLayer(
+      getActivityIndex(activityIndex),
+      newLayer,
+      newLayerLevel,
+      activity_props_container
+    );
 
     addClickListenerToAddMorePropsButton();
   }
@@ -108,10 +123,12 @@ function addMoreItems(activityIndex) {
 }
 
 document.body.onload = () => {
-  addMoreItems('a1n1');
+  getActivityClientWidthForCarouselSlide();
+  addMoreItems('a1');
+  addMoreItems('a2');
 };
 
-TOTAL_ACTIVITIES_AMOUNT.addEventListener('change', renderActivities);
+ADD_ACTIVITY_BUTTON.addEventListener('click', addActivity);
 
 ACTIVITIES_CONTENT.forEach(activity_content => {
   activity_content.addEventListener('input', resizeHeight);

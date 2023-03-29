@@ -51,7 +51,10 @@ export default function addMorePropsInPropLayer(
   propLayer.insertBefore(newProp, addMorePropsButton);
   addMoreItems(`${propName}`);
 
-  JSON_GENERATOR_CONTAINER.scrollTo(0, JSON_GENERATOR_CONTAINER.scrollHeight);
+  let activity_container =
+    addMorePropsButton.parentElement.parentElement.parentElement;
+
+  activity_container.scrollTo(0, activity_container.scrollHeight);
 }
 
 function addClickListenerToAddMorePropsButton() {
