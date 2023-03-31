@@ -7,8 +7,14 @@ function renderPropsLayer(
   activityPropsContainer
 ) {
   const propsLayer = document.createElement('div');
+  let propsInNewLayer = newLayer.match(/p[0-9]+/gi);
+  let lastPropInNewLayer = propsInNewLayer[propsInNewLayer.length - 1];
+
   propsLayer.classList.add('activity-prop-levels');
-  propsLayer.id = `${activityIndex}n${newLayerLevel}`;
+  propsLayer.id = `${newLayer.slice(
+    0,
+    newLayer.length - lastPropInNewLayer.length
+  )}`;
 
   propsLayer.innerHTML = `
   <div id="${newLayer}">

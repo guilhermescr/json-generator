@@ -89,8 +89,6 @@ function addPropsInActivity() {
     );
 
     activity_props_container.removeChild(elementsToBeRemoved[0]);
-
-    activity_props_container.classList.add('hide');
     activity_content_container.classList.remove('hide');
   } else {
     activity_content_container.classList.add('hide');

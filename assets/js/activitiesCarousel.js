@@ -9,23 +9,18 @@ function getActivityClientWidthForCarouselSlide() {
     document.querySelectorAll('.activity')[0].clientWidth + 20;
 }
 
-function checkIfScrollIsAllowed(scrollTimes = 0) {
+function checkIfScrollIsDone() {
   let scrollLeftValues = [];
 
   for (let i = 0; i < ACTIVITIES_CONTAINER.children.length; i++) {
     scrollLeftValues.push(ACTIVITY_CLIENT_WIDTH * i);
   }
 
-  let checkScrollInterval = setInterval(() => {
-    for (let scrollLeftValue of scrollLeftValues) {
-      if (scrollLeftValue === ACTIVITIES_CONTAINER.scrollLeft) {
-        isScrollAllowed = true;
-        clearInterval(checkScrollInterval);
-      } else {
-        isScrollAllowed = false;
-      }
+  for (let scrollLeftValue of scrollLeftValues) {
+    if (scrollLeftValue === ACTIVITIES_CONTAINER.scrollLeft) {
+      isScrollAllowed = true;
     }
-  }, 300);
+  }
 }
 
 function checkArrowClassState(direction, newWidth) {
@@ -50,12 +45,8 @@ function checkArrowClassState(direction, newWidth) {
 }
 
 function slideToTheLeft() {
-  // if (!isScrollAllowed) return;
-
   // 20 is the 20px gap in ACTIVITIES_CONTAINER
   let newWidth = ACTIVITIES_CONTAINER.scrollLeft - ACTIVITY_CLIENT_WIDTH;
-
-  checkIfScrollIsAllowed();
 
   if (newWidth >= 0) {
     ACTIVITIES_CONTAINER.scrollTo(newWidth, 0);
@@ -65,11 +56,7 @@ function slideToTheLeft() {
 }
 
 function slideToTheRight() {
-  // if (!isScrollAllowed) return;
-
   let newWidth = ACTIVITIES_CONTAINER.scrollLeft + ACTIVITY_CLIENT_WIDTH;
-
-  checkIfScrollIsAllowed();
 
   if (newWidth < ACTIVITIES_CONTAINER.scrollWidth) {
     ACTIVITIES_CONTAINER.scrollTo(newWidth, 0);
@@ -78,9 +65,32 @@ function slideToTheRight() {
   checkArrowClassState('right', newWidth);
 }
 
-LEFT_ARROW_BUTTON.addEventListener('click', slideToTheLeft);
-RIGHT_ARROW_BUTTON.addEventListener('click', slideToTheRight);
+function handleSlideButtonClick(buttonId) {
+  buttonId = this?.id || buttonId;
+
+  checkIfScrollIsDone();
+
+  if (isScrollAllowed) {
+    isScrollAllowed = false;
+
+    buttonId.includes('left') ? slideToTheLeft() : slideToTheRight();
+  }
+}
+
+document.querySelectorAll('.carousel-arrow-button').forEach(slideButton => {
+  slideButton.addEventListener('click', handleSlideButtonClick);
+});
 
 window.onresize = getActivityClientWidthForCarouselSlide;
+
+window.onkeydown = ({ key }) => {
+  if (key === 'ArrowLeft') {
+    handleSlideButtonClick('left');
+  }
+
+  if (key === 'ArrowRight') {
+    handleSlideButtonClick('right');
+  }
+};
 
 export { getActivityClientWidthForCarouselSlide, checkArrowClassState };

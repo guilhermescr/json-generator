@@ -74,9 +74,9 @@ function addClickListenerToAddMorePropsButton() {
 
         let newPropNumber = previousPropTitleNumber + 1;
 
-        let newPropTitle = `${previousPropTitle.replace(
-          latestPropIndex,
-          ''
+        let newPropTitle = `${previousPropTitle.slice(
+          0,
+          previousPropTitle.length - latestPropIndex.length
         )}P${newPropNumber}`;
 
         addMorePropsInPropLayer(
