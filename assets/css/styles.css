@@ -47,7 +47,6 @@ p {
   max-height: 391px;
   max-width: 601px;
   padding: 20px;
-  padding-bottom: 0;
   position: relative;
   scroll-behavior: smooth;
   width: 100%;
@@ -150,7 +149,7 @@ p {
   border-top: 1px solid #323232;
   display: flex;
   gap: 20px;
-  overflow-x: auto;
+  overflow-x: hidden;
   padding-top: 10px;
   scroll-behavior: smooth;
 }
@@ -186,6 +185,7 @@ p {
 
 .activity h4 {
   font-size: 19px;
+  word-wrap: break-word;
 }
 
 .activity label {

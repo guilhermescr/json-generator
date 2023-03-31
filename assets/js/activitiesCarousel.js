@@ -5,28 +5,27 @@ let ACTIVITY_CLIENT_WIDTH = 0;
 let isScrollAllowed = true;
 
 function getActivityClientWidthForCarouselSlide() {
-  ACTIVITY_CLIENT_WIDTH = document.querySelectorAll('.activity')[0].clientWidth;
+  ACTIVITY_CLIENT_WIDTH =
+    document.querySelectorAll('.activity')[0].clientWidth + 20;
 }
 
 function checkIfScrollIsAllowed(scrollTimes = 0) {
-  let scrollLeftBase =
-    ACTIVITIES_CONTAINER.scrollWidth / ACTIVITIES_CONTAINER.children.length +
-    10;
+  let scrollLeftValues = [];
 
-  for (
-    scrollTimes;
-    scrollTimes < ACTIVITIES_CONTAINER.children.length;
-    scrollTimes++
-  ) {
-    console.log(
-      scrollLeftBase * scrollTimes,
-      ACTIVITIES_CONTAINER.scrollLeft,
-      scrollLeftBase * scrollTimes === ACTIVITIES_CONTAINER.scrollLeft
-    );
-
-    // isScrollAllowed =
-    //   scrollLeftBase * scrollTimes === ACTIVITIES_CONTAINER.scrollLeft;
+  for (let i = 0; i < ACTIVITIES_CONTAINER.children.length; i++) {
+    scrollLeftValues.push(ACTIVITY_CLIENT_WIDTH * i);
   }
+
+  let checkScrollInterval = setInterval(() => {
+    for (let scrollLeftValue of scrollLeftValues) {
+      if (scrollLeftValue === ACTIVITIES_CONTAINER.scrollLeft) {
+        isScrollAllowed = true;
+        clearInterval(checkScrollInterval);
+      } else {
+        isScrollAllowed = false;
+      }
+    }
+  }, 300);
 }
 
 function checkArrowClassState(direction, newWidth) {
@@ -40,10 +39,7 @@ function checkArrowClassState(direction, newWidth) {
   }
 
   if (direction === 'right') {
-    if (
-      newWidth + ACTIVITY_CLIENT_WIDTH + 20 >=
-      ACTIVITIES_CONTAINER.scrollWidth
-    ) {
+    if (newWidth + ACTIVITY_CLIENT_WIDTH >= ACTIVITIES_CONTAINER.scrollWidth) {
       LEFT_ARROW_BUTTON.classList.add('carousel-arrow-button--active');
 
       RIGHT_ARROW_BUTTON.classList.remove('carousel-arrow-button--active');
@@ -54,11 +50,12 @@ function checkArrowClassState(direction, newWidth) {
 }
 
 function slideToTheLeft() {
+  // if (!isScrollAllowed) return;
+
   // 20 is the 20px gap in ACTIVITIES_CONTAINER
-  let newWidth = ACTIVITIES_CONTAINER.scrollLeft - (ACTIVITY_CLIENT_WIDTH + 20);
+  let newWidth = ACTIVITIES_CONTAINER.scrollLeft - ACTIVITY_CLIENT_WIDTH;
 
   checkIfScrollIsAllowed();
-  if (!isScrollAllowed) return;
 
   if (newWidth >= 0) {
     ACTIVITIES_CONTAINER.scrollTo(newWidth, 0);
@@ -68,10 +65,11 @@ function slideToTheLeft() {
 }
 
 function slideToTheRight() {
-  let newWidth = ACTIVITIES_CONTAINER.scrollLeft + ACTIVITY_CLIENT_WIDTH + 20;
+  // if (!isScrollAllowed) return;
+
+  let newWidth = ACTIVITIES_CONTAINER.scrollLeft + ACTIVITY_CLIENT_WIDTH;
 
   checkIfScrollIsAllowed();
-  if (!isScrollAllowed) return;
 
   if (newWidth < ACTIVITIES_CONTAINER.scrollWidth) {
     ACTIVITIES_CONTAINER.scrollTo(newWidth, 0);

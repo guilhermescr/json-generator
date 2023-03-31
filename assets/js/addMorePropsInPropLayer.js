@@ -1,4 +1,4 @@
-import { addMoreItems, JSON_GENERATOR_CONTAINER } from './main.js';
+import { addMoreItems } from './main.js';
 
 export default function addMorePropsInPropLayer(
   propName,
@@ -65,12 +65,19 @@ function addClickListenerToAddMorePropsButton() {
         let previousPropTitle =
           addMorePropsButton.previousElementSibling.children[0].innerHTML;
 
-        let newPropNumber =
-          Number(previousPropTitle.slice(previousPropTitle.length - 1)) + 1;
+        let previousPropTitleNumbers = previousPropTitle.match(/p[0-9]+/gi);
 
-        let newPropTitle =
-          previousPropTitle.slice(0, previousPropTitle.length - 1) +
-          newPropNumber;
+        let latestPropIndex =
+          previousPropTitleNumbers[previousPropTitleNumbers.length - 1];
+
+        let previousPropTitleNumber = Number(latestPropIndex.replace(/p/i, ''));
+
+        let newPropNumber = previousPropTitleNumber + 1;
+
+        let newPropTitle = `${previousPropTitle.replace(
+          latestPropIndex,
+          ''
+        )}P${newPropNumber}`;
 
         addMorePropsInPropLayer(
           newPropTitle,

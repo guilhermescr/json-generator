@@ -15,6 +15,7 @@ function addActivity() {
   const ACTIVITY = document.createElement('div');
   const ACTIVITY_INDEX = ACTIVITIES_CONTAINER.children.length + 1;
   ACTIVITY.classList.add('activity');
+  ACTIVITY.id = `a${ACTIVITY_INDEX}`;
 
   ACTIVITY.innerHTML = `
     <h3>Activity ${ACTIVITY_INDEX}</h3>
@@ -61,19 +62,18 @@ function getActivityIndex(activity) {
 }
 
 function addPropsInActivity() {
-  console.log(this);
-
-  const { name: activityIndex } = this;
+  const { name: activity } = this;
+  const activityIndex = getActivityIndex(activity);
 
   const activity_content_container =
     this.parentElement.parentElement.parentElement.nextElementSibling;
 
-  const activity_props_container =
-    this.parentElement.parentElement.parentElement.nextElementSibling
-      .nextElementSibling;
+  const activity_props_container = document
+    .querySelector(`#${activityIndex}`)
+    .querySelector('.activity-props');
 
-  let previousLayer = activityIndex.replace(
-    activityIndex.slice(activityIndex.search('-item')),
+  let previousLayer = activity.replace(
+    activity.slice(activity.search('-item')),
     ''
   );
   let previousLayerLevel = getPreviousLayerLevel(previousLayer);
@@ -82,15 +82,22 @@ function addPropsInActivity() {
   let newLayer = `${previousLayer}n${newLayerLevel}p1`;
 
   if (this.id.includes('no')) {
+    let elementsToBeRemovedId = `${activityIndex}n${newLayerLevel}`;
+
+    let elementsToBeRemoved = [...activity_props_container.children].filter(
+      activityPropsChild => activityPropsChild.id === elementsToBeRemovedId
+    );
+
+    activity_props_container.removeChild(elementsToBeRemoved[0]);
+
     activity_props_container.classList.add('hide');
     activity_content_container.classList.remove('hide');
-    console.log(activityIndex);
   } else {
     activity_content_container.classList.add('hide');
     activity_props_container.classList.remove('hide');
 
     renderPropsLayer(
-      getActivityIndex(activityIndex),
+      getActivityIndex(activity),
       newLayer,
       newLayerLevel,
       activity_props_container

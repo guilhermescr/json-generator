@@ -55,7 +55,7 @@ function renderPropsLayer(
     class="add-more-props-button"
     type="button"
   >
-    <span class="more-props-level">N2</span>
+    <span class="more-props-level">N${newLayerLevel}</span>
     Add more props +
   </button>
   `;
