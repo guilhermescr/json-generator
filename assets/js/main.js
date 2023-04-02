@@ -1,9 +1,9 @@
 import {
   checkArrowClassState,
   getActivityClientWidthForCarouselSlide
-} from './activitiesCarousel.js';
-import { addClickListenerToAddMorePropsButton } from './addMorePropsInPropLayer.js';
-import { getPreviousLayerLevel } from './layerMethods.mjs';
+} from './activitiesCarousel.mjs';
+import { addClickListenerToAddMorePropsButton } from './addMorePropsInPropLayer.mjs';
+import { getPreviousLayerLevel, sortLayers } from './layerMethods.mjs';
 import renderPropsLayer from './renderPropsLayers.mjs';
 
 const JSON_GENERATOR_CONTAINER = document.getElementById('json-generator');
@@ -103,6 +103,10 @@ function addPropsInActivity() {
 
     addClickListenerToAddMorePropsButton();
   }
+
+  if (previousLayer.includes('p')) {
+    sortLayers(activity_props_container);
+  }
 }
 
 function resizeHeight() {
@@ -130,7 +134,6 @@ function addMoreItems(activityIndex) {
 document.body.onload = () => {
   getActivityClientWidthForCarouselSlide();
   addMoreItems('a1');
-  addMoreItems('a2');
 };
 
 ADD_ACTIVITY_BUTTON.addEventListener('click', addActivity);

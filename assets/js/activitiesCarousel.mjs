@@ -24,6 +24,11 @@ function checkIfScrollIsDone() {
 }
 
 function checkArrowClassState(direction, newWidth) {
+  if (direction === 'none') {
+    LEFT_ARROW_BUTTON.classList.remove('carousel-arrow-button--active');
+    RIGHT_ARROW_BUTTON.classList.remove('carousel-arrow-button--active');
+  }
+
   if (direction === 'left') {
     if (!newWidth) {
       LEFT_ARROW_BUTTON.classList.remove('carousel-arrow-button--active');
@@ -66,6 +71,11 @@ function slideToTheRight() {
 }
 
 function handleSlideButtonClick(buttonId) {
+  if (ACTIVITIES_CONTAINER.children.length === 1) {
+    checkArrowClassState('none', 0);
+    return;
+  }
+
   buttonId = this?.id || buttonId;
 
   checkIfScrollIsDone();
