@@ -1,5 +1,4 @@
 import { addMoreItems } from './main.js';
-import { addClickListenerToAddMorePropsButton } from './addMorePropsInPropLayer.mjs';
 
 function getPreviousLayerLevel(layerLevel) {
   let layerLevels = layerLevel.match(/n[0-9]+/g);
@@ -23,7 +22,6 @@ function sortLayers(activity_props_container) {
   const layersIds = [...activity_props_container.children].map(
     layer => layer.id
   );
-  let propLayers;
 
   /* a.localeCompare(b);
   - Determines whether two strings are equivalent in the current locale.
@@ -33,84 +31,83 @@ function sortLayers(activity_props_container) {
   */
   layersIds.sort((a, b) => a.localeCompare(b));
 
-  propLayers = getPropLayers(layersIds);
+  let propLayers = getPropLayers(layersIds);
 
   // activity_props_container.innerHTML = '';
   const layersValues = [];
-  let newPropsContainerDivs = '';
+  let sortedLayersString = '';
 
-  propLayers.map(propLayer => {
-    const layerValues = {
-      activityTitle: {
-        elementSelector: '.activity-title',
-        value: propLayer.querySelector('.activity-title').value
-      },
-      moreItemsInput: {
-        elementSelector: '',
-        isContent: true,
-        value: ''
-      }
-    };
+  propLayers.forEach(propLayer => {
+    sortedLayersString += `${propLayer.outerHTML}\n`;
 
-    (function () {
-      propLayer
-        .querySelectorAll('input[type="radio"]')
-        .forEach(moreItemsInputElement => {
-          const { moreItemsInput } = layerValues;
-
-          if (
-            moreItemsInputElement.id.includes('no') &&
-            moreItemsInputElement.checked
-          ) {
-            moreItemsInput.elementSelector = `#${moreItemsInputElement.id}`;
-
-            moreItemsInput.isContent = true;
-
-            moreItemsInput.value =
-              propLayer.querySelector('.activity-content').value;
+    activity_props_container
+      .querySelectorAll(`#${propLayer.id} > div`)
+      .forEach(propContainer => {
+        const layerValues = {
+          activityTitle: {
+            elementSelector: '.activity-title',
+            value: propContainer.querySelector('.activity-title').value
+          },
+          moreItemsInput: {
+            elementSelector: '',
+            isContent: true,
+            value: ''
           }
+        };
 
-          if (
-            moreItemsInputElement.id.includes('yes') &&
-            moreItemsInputElement.checked
-          ) {
-            moreItemsInput.elementSelector = `#${moreItemsInputElement.id}`;
+        (function () {
+          propContainer
+            .querySelectorAll('input[type="radio"]')
+            .forEach(moreItemsInputElement => {
+              const { moreItemsInput } = layerValues;
 
-            moreItemsInput.isContent = false;
-          }
-        });
-    })();
+              if (moreItemsInputElement.checked) {
+                moreItemsInput.elementSelector = `#${moreItemsInputElement.id}`;
 
-    layersValues.push(layerValues);
-    newPropsContainerDivs += `
-    ${propLayer.outerHTML}
-    `;
+                moreItemsInput.isContent =
+                  moreItemsInputElement.id.includes('no');
+
+                if (moreItemsInput.isContent) {
+                  moreItemsInput.value =
+                    propContainer.querySelector('.activity-content').value;
+                }
+              }
+            });
+        })();
+
+        layersValues.push(layerValues);
+      });
   });
-  console.log(layersValues);
 
-  activity_props_container.innerHTML = newPropsContainerDivs;
+  activity_props_container.innerHTML = sortedLayersString;
 
   propLayers = getPropLayers(layersIds);
 
-  layersValues.forEach((layerValues, index) => {
-    const { activityTitle, moreItemsInput } = layerValues;
+  let propIndex = 0;
 
-    propLayers[index].querySelector(activityTitle.elementSelector).value =
-      activityTitle.value;
+  propLayers.forEach(propLayer => {
+    activity_props_container
+      .querySelectorAll(`#${propLayer.id} > div`)
+      .forEach(propContainer => {
+        const { activityTitle, moreItemsInput } = layersValues[propIndex];
 
-    if (moreItemsInput.isContent) {
-      propLayers[index].querySelector(moreItemsInput.elementSelector).value =
-        moreItemsInput.value;
-    } else {
-      propLayers[index].querySelector(
-        moreItemsInput.elementSelector
-      ).checked = true;
-    }
+        propContainer.querySelector(activityTitle.elementSelector).value =
+          activityTitle.value;
 
-    addMoreItems(
-      `${propLayers[index].querySelector('h4').innerHTML.toLowerCase()}`
-    );
-    addClickListenerToAddMorePropsButton();
+        if (moreItemsInput.isContent) {
+          propContainer.querySelector('.activity-content').value =
+            moreItemsInput.value;
+        } else {
+          propContainer.querySelector(
+            moreItemsInput.elementSelector
+          ).checked = true;
+        }
+
+        addMoreItems(
+          `${propContainer.querySelector('h4').innerHTML.toLowerCase()}`
+        );
+        ++propIndex;
+      });
   });
 }
 

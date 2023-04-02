@@ -57,34 +57,34 @@ export default function addMorePropsInPropLayer(
   activity_container.scrollTo(0, activity_container.scrollHeight);
 }
 
+function handleAddMorePropsButtonClick() {
+  let previousPropTitle = this.previousElementSibling.children[0].innerHTML;
+
+  let previousPropTitleNumbers = previousPropTitle.match(/p[0-9]+/gi);
+
+  let latestPropIndex =
+    previousPropTitleNumbers[previousPropTitleNumbers.length - 1];
+
+  let previousPropTitleNumber = Number(latestPropIndex.replace(/p/i, ''));
+
+  let newPropNumber = previousPropTitleNumber + 1;
+
+  let newPropTitle = `${previousPropTitle.slice(
+    0,
+    previousPropTitle.length - latestPropIndex.length
+  )}P${newPropNumber}`;
+
+  addMorePropsInPropLayer(newPropTitle, this.parentElement, this);
+}
+
 function addClickListenerToAddMorePropsButton() {
   document
     .querySelectorAll('.add-more-props-button')
     .forEach(addMorePropsButton => {
-      addMorePropsButton.addEventListener('click', () => {
-        let previousPropTitle =
-          addMorePropsButton.previousElementSibling.children[0].innerHTML;
-
-        let previousPropTitleNumbers = previousPropTitle.match(/p[0-9]+/gi);
-
-        let latestPropIndex =
-          previousPropTitleNumbers[previousPropTitleNumbers.length - 1];
-
-        let previousPropTitleNumber = Number(latestPropIndex.replace(/p/i, ''));
-
-        let newPropNumber = previousPropTitleNumber + 1;
-
-        let newPropTitle = `${previousPropTitle.slice(
-          0,
-          previousPropTitle.length - latestPropIndex.length
-        )}P${newPropNumber}`;
-
-        addMorePropsInPropLayer(
-          newPropTitle,
-          addMorePropsButton.parentElement,
-          addMorePropsButton
-        );
-      });
+      addMorePropsButton.addEventListener(
+        'click',
+        handleAddMorePropsButtonClick
+      );
     });
 }
 

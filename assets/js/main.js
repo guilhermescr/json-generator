@@ -100,12 +100,11 @@ function addPropsInActivity() {
       newLayerLevel,
       activity_props_container
     );
-
-    addClickListenerToAddMorePropsButton();
   }
 
-  if (previousLayer.includes('p')) {
+  if (newLayer.includes('p')) {
     sortLayers(activity_props_container);
+    addClickListenerToAddMorePropsButton();
   }
 }
 
