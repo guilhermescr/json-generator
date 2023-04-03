@@ -18,6 +18,22 @@ function getPropLayers(layersIds) {
   return propLayers;
 }
 
+function getAllPropContainers(activity_props_container) {
+  const propLayers = [...document.querySelectorAll('.activity-prop-levels')];
+
+  const propContainers = [];
+
+  propLayers.forEach(propLayer => {
+    [
+      ...activity_props_container.querySelectorAll(`#${propLayer.id} > div`)
+    ].forEach(propContainer => {
+      propContainers.push(propContainer);
+    });
+  });
+
+  return { propLayers, propContainers };
+}
+
 function sortLayers(activity_props_container) {
   const layersIds = [...activity_props_container.children].map(
     layer => layer.id
@@ -111,4 +127,4 @@ function sortLayers(activity_props_container) {
   });
 }
 
-export { getPreviousLayerLevel, sortLayers };
+export { getPreviousLayerLevel, getAllPropContainers, sortLayers };

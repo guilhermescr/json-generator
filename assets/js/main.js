@@ -3,7 +3,12 @@ import {
   getActivityClientWidthForCarouselSlide
 } from './activitiesCarousel.mjs';
 import { addClickListenerToAddMorePropsButton } from './addMorePropsInPropLayer.mjs';
-import { getPreviousLayerLevel, sortLayers } from './layerMethods.mjs';
+import { addDeleteActivityListener } from './deleteActivity.mjs';
+import {
+  getAllPropContainers,
+  getPreviousLayerLevel,
+  sortLayers
+} from './layerMethods.mjs';
 import renderPropsLayer from './renderPropsLayers.mjs';
 
 const JSON_GENERATOR_CONTAINER = document.getElementById('json-generator');
@@ -19,6 +24,27 @@ function addActivity() {
 
   ACTIVITY.innerHTML = `
     <h3>Activity ${ACTIVITY_INDEX}</h3>
+
+    <button type="button" class="delete-activity-button">
+    Delete Activity
+    <svg
+      version="1.1"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      viewBox="0 0 485 485"
+      xml:space="preserve"
+    >
+      <g>
+        <g>
+          <rect x="67.224" width="350.535" height="71.81" />
+          <path
+            d="M417.776,92.829H67.237V485h350.537V92.829H417.776z M165.402,431.447h-28.362V146.383h28.362V431.447z M256.689,431.447
+                h-28.363V146.383h28.363V431.447z M347.97,431.447h-28.361V146.383h28.361V431.447z"
+          />
+        </g>
+      </g>
+    </svg>
+  </button>
 
     <div class="activity-title-container">
       <label for="a${ACTIVITY_INDEX}-title">Title:</label>
@@ -53,12 +79,39 @@ function addActivity() {
   ACTIVITIES_CONTAINER.scrollTo(ACTIVITIES_CONTAINER.scrollWidth, 0);
   checkArrowClassState('right', ACTIVITIES_CONTAINER.scrollWidth);
   addMoreItems(`a${ACTIVITY_INDEX}`);
+  addDeleteActivityListener();
 }
 
 function getActivityIndex(activity) {
   activity = activity.match(/a[0-9]+/g);
 
   if (activity) return activity[0];
+}
+
+function removeChildrenProps(
+  activity_props_container,
+  previousLayer,
+  newLayerLevel
+) {
+  let elementsToBeRemovedId = `${previousLayer}n${newLayerLevel}`;
+
+  const { propLayers, propContainers } = getAllPropContainers(
+    activity_props_container
+  );
+
+  activity_props_container.removeChild(
+    document.getElementById(elementsToBeRemovedId)
+  );
+
+  propLayers.forEach(propLayer => {
+    if (propLayer.id.includes(elementsToBeRemovedId))
+      propLayer?.parentElement?.removeChild(propLayer);
+  });
+
+  propContainers.forEach(propContainer => {
+    if (propContainer.id.includes(elementsToBeRemovedId))
+      propContainer?.parentElement?.removeChild(propContainer);
+  });
 }
 
 function addPropsInActivity() {
@@ -82,24 +135,17 @@ function addPropsInActivity() {
   let newLayer = `${previousLayer}n${newLayerLevel}p1`;
 
   if (this.id.includes('no')) {
-    let elementsToBeRemovedId = `${activityIndex}n${newLayerLevel}`;
+    removeChildrenProps(activity_props_container, previousLayer, newLayerLevel);
 
-    let elementsToBeRemoved = [...activity_props_container.children].filter(
-      activityPropsChild => activityPropsChild.id === elementsToBeRemovedId
-    );
-
-    activity_props_container.removeChild(elementsToBeRemoved[0]);
+    if (!activity_props_container.children.length) {
+      activity_props_container.classList.add('hide');
+    }
     activity_content_container.classList.remove('hide');
   } else {
     activity_content_container.classList.add('hide');
     activity_props_container.classList.remove('hide');
 
-    renderPropsLayer(
-      getActivityIndex(activity),
-      newLayer,
-      newLayerLevel,
-      activity_props_container
-    );
+    renderPropsLayer(newLayer, newLayerLevel, activity_props_container);
   }
 
   if (newLayer.includes('p')) {

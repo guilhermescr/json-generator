@@ -1,11 +1,6 @@
 import { addMoreItems } from './main.js';
 
-function renderPropsLayer(
-  activityIndex,
-  newLayer,
-  newLayerLevel,
-  activityPropsContainer
-) {
+function renderPropsLayer(newLayer, newLayerLevel, activityPropsContainer) {
   const propsLayer = document.createElement('div');
   let propsInNewLayer = newLayer.match(/p[0-9]+/gi);
   let lastPropInNewLayer = propsInNewLayer[propsInNewLayer.length - 1];

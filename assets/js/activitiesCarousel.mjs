@@ -23,7 +23,19 @@ function checkIfScrollIsDone() {
   }
 }
 
-function checkArrowClassState(direction, newWidth) {
+function checkArrowClassState(direction, newWidth, isNotScrolling = false) {
+  if (isNotScrolling) {
+    if (direction === 'left') {
+      LEFT_ARROW_BUTTON.classList.remove('carousel-arrow-button--active');
+    }
+
+    if (direction === 'right') {
+      RIGHT_ARROW_BUTTON.classList.remove('carousel-arrow-button--active');
+    }
+
+    return;
+  }
+
   if (direction === 'none') {
     LEFT_ARROW_BUTTON.classList.remove('carousel-arrow-button--active');
     RIGHT_ARROW_BUTTON.classList.remove('carousel-arrow-button--active');
@@ -103,4 +115,9 @@ window.onkeydown = ({ key }) => {
   }
 };
 
-export { getActivityClientWidthForCarouselSlide, checkArrowClassState };
+export {
+  getActivityClientWidthForCarouselSlide,
+  checkArrowClassState,
+  slideToTheLeft,
+  isScrollAllowed
+};
