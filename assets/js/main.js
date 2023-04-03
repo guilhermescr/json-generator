@@ -141,7 +141,11 @@ function addPropsInActivity() {
       activity_props_container.classList.add('hide');
     }
     activity_content_container.classList.remove('hide');
-  } else {
+  }
+
+  if (document.getElementById(newLayer) !== null) return;
+
+  if (this.id.includes('yes')) {
     activity_content_container.classList.add('hide');
     activity_props_container.classList.remove('hide');
 
