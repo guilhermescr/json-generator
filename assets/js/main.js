@@ -3,7 +3,7 @@ import {
   getActivityClientWidthForCarouselSlide
 } from './activitiesCarousel.mjs';
 import { addClickListenerToAddMorePropsButton } from './addMorePropsInPropLayer.mjs';
-import { addDeleteActivityListener } from './deleteActivity.mjs';
+import { addDeleteActivityListener } from './activitiesMethods.mjs';
 import {
   getAllPropContainers,
   getPreviousLayerLevel,
@@ -25,7 +25,7 @@ function addActivity() {
   ACTIVITY.innerHTML = `
     <h3>Activity ${ACTIVITY_INDEX}</h3>
 
-    <button type="button" class="delete-activity-button">
+    <button type="button" class="delete-button delete-activity-button">
     Delete Activity
     <svg
       version="1.1"
@@ -52,7 +52,7 @@ function addActivity() {
     </div>
 
     <div class="activity-moreItems-container">
-      <label for="a${ACTIVITY_INDEX}-moreItems">More items?</label>
+      <label for="a${ACTIVITY_INDEX}-moreItems">Is Object?</label>
 
       <div class="more-items">
         <div>
@@ -155,7 +155,111 @@ function addPropsInActivity() {
   if (newLayer.includes('p')) {
     sortLayers(activity_props_container);
     addClickListenerToAddMorePropsButton();
+    addDeletePropButtonListener();
   }
+}
+
+function removePropsInActivity() {
+  let propLayer = this.parentElement.parentElement;
+
+  let propString = this.parentElement.id;
+  let props = propString.match(/p[0-9]+/g);
+  let deletedProp = props[props.length - 1];
+  let deletedPropIndex = Number(deletedProp.replace('p', ''));
+  let propWithEmptyP = propString.slice(
+    0,
+    propString.length - deletedProp.length + 1
+  );
+
+  propLayer.removeChild(this.parentElement);
+
+  let propLayerChildren = [...propLayer.children].filter(propInPropLayer => {
+    if (propInPropLayer instanceof HTMLDivElement) {
+      return propInPropLayer;
+    }
+  });
+
+  const activity_props_container = document.querySelector(
+    `#${getActivityIndex(propLayerChildren[0].id)} .activity-props`
+  );
+
+  for (
+    let propIndexIterator = deletedPropIndex;
+    propIndexIterator <= propLayerChildren.length;
+    propIndexIterator++
+  ) {
+    let propLayerChildIndex = propIndexIterator - 1;
+    let propContainer = propLayerChildren[propLayerChildIndex];
+    let previousPropId = propContainer.id;
+    propContainer.id = `${propWithEmptyP}${propIndexIterator}`;
+
+    /*
+    document.querySelectorAll('*').forEach(element => {
+      if (element?.id?.includes(previousPropId)) {
+        console.log(previousPropId, element);
+      }
+    });
+    */
+
+    propContainer.querySelectorAll('*').forEach(propContainerChild => {
+      propContainerChild.getAttributeNames().map(attribute => {
+        let attributeValue = propContainerChild.getAttribute(attribute);
+
+        if (attributeValue.includes(previousPropId)) {
+          propContainerChild.setAttribute(
+            attribute,
+            attributeValue.replace(previousPropId, propContainer.id)
+          );
+        }
+      });
+
+      if (
+        propContainerChild?.innerText?.includes(previousPropId.toUpperCase())
+      ) {
+        propContainerChild.innerHTML = `${propWithEmptyP.toUpperCase()}${propIndexIterator}`;
+      }
+    });
+
+    const { propContainers } = getAllPropContainers(activity_props_container);
+    propContainers.forEach(propContainersChild => {
+      if (propContainersChild?.id?.includes(previousPropId)) {
+        propContainersChild
+          .querySelectorAll('*')
+          .forEach(propContainerChild => {
+            propContainerChild.getAttributeNames().map(attribute => {
+              let attributeValue = propContainerChild.getAttribute(attribute);
+
+              if (attributeValue.includes(previousPropId)) {
+                propContainerChild.setAttribute(
+                  attribute,
+                  attributeValue.replace(previousPropId, propContainer.id)
+                );
+              }
+            });
+
+            if (
+              propContainerChild?.innerText?.includes(
+                previousPropId.toUpperCase()
+              )
+            ) {
+              propContainerChild.innerHTML =
+                propContainerChild.innerHTML.replace(
+                  previousPropId.toUpperCase(),
+                  `${propWithEmptyP.toUpperCase()}${propIndexIterator}`
+                );
+            }
+          });
+      }
+    });
+  }
+
+  // sortPropsIndex();
+}
+
+function addDeletePropButtonListener() {
+  document.querySelectorAll('.delete-prop-button').forEach(deletePropButton => {
+    deletePropButton.addEventListener('click', removePropsInActivity);
+  });
 }
 
 function resizeHeight() {
@@ -191,4 +295,4 @@ ACTIVITIES_CONTENT.forEach(activity_content => {
   activity_content.addEventListener('input', resizeHeight);
 });
 
-export { addMoreItems, JSON_GENERATOR_CONTAINER };
+export { addMoreItems, addDeletePropButtonListener, JSON_GENERATOR_CONTAINER };

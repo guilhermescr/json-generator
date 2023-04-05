@@ -1,4 +1,4 @@
-import { addMoreItems } from './main.js';
+import { addDeletePropButtonListener, addMoreItems } from './main.js';
 
 export default function addMorePropsInPropLayer(
   propName,
@@ -12,13 +12,34 @@ export default function addMorePropsInPropLayer(
   newProp.innerHTML = `
   <h4>${propName.toUpperCase()}</h4>
 
+  <button type="button" class="delete-button delete-prop-button">
+    Delete Prop
+    <svg
+      version="1.1"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      viewBox="0 0 485 485"
+      xml:space="preserve"
+    >
+      <g>
+        <g>
+          <rect x="67.224" width="350.535" height="71.81" />
+          <path
+            d="M417.776,92.829H67.237V485h350.537V92.829H417.776z M165.402,431.447h-28.362V146.383h28.362V431.447z M256.689,431.447
+                h-28.363V146.383h28.363V431.447z M347.97,431.447h-28.361V146.383h28.361V431.447z"
+          />
+        </g>
+      </g>
+    </svg>
+  </button>
+
   <div class="activity-title-container">
     <label for="${propName}-title">Title:</label>
     <input type="text" id="${propName}-title" class="activity-title" />
   </div>
 
   <div class="activity-moreItems-container">
-    <label for="${propName}-moreItems">More items?</label>
+    <label for="${propName}-moreItems">Is Object?</label>
 
     <div class="more-items">
       <div>
@@ -50,6 +71,7 @@ export default function addMorePropsInPropLayer(
 
   propLayer.insertBefore(newProp, addMorePropsButton);
   addMoreItems(`${propName}`);
+  addDeletePropButtonListener();
 
   let activity_container =
     addMorePropsButton.parentElement.parentElement.parentElement;

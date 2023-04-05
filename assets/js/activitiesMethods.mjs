@@ -1,10 +1,5 @@
 import { checkArrowClassState, slideToTheLeft } from './activitiesCarousel.mjs';
 
-function getAllActivities() {
-  const ACTIVITIES_CONTAINER = document.querySelector('.activities');
-  console.log(ACTIVITIES_CONTAINER.children.length);
-}
-
 function sortActivitiesIndex(activityIndex) {
   const ACTIVITIES_CONTAINER = document.querySelector('.activities');
 

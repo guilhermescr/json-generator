@@ -186,10 +186,11 @@ p {
 
 .activity h4 {
   font-size: 19px;
+  margin-bottom: 5px;
   word-wrap: break-word;
 }
 
-.delete-activity-button {
+.delete-button {
   align-items: center;
   background-color: #323232;
   border: none;
@@ -207,22 +208,22 @@ p {
   width: max-content;
 }
 
-.delete-activity-button:hover {
+.delete-button:hover {
   color: #e7b10a;
 }
 
-.delete-activity-button:active {
+.delete-button:active {
   opacity: 0.9;
 }
 
-.delete-activity-button svg {
+.delete-button svg {
   fill: #fff;
   max-width: 18px;
   transition: all 0.2s ease;
   width: 100%;
 }
 
-.delete-activity-button:hover svg {
+.delete-button:hover svg {
   fill: #e7b10a;
 }
 
@@ -309,7 +310,17 @@ p {
 .activity-prop-levels > div {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  position: relative;
+}
+
+.activity-prop-levels {
+  gap: 20px;
+}
+
+.activity-prop-levels
+  > div
+  > *:not(h4, .activity-prop-levels > div > div:last-child) {
+  margin-bottom: 15px;
 }
 
 .add-more-props-button {
@@ -333,6 +344,10 @@ p {
 
 .add-more-props-button:active {
   opacity: 0.9;
+}
+
+.delete-prop-button {
+  top: -10px;
 }
 
 .more-props-level {

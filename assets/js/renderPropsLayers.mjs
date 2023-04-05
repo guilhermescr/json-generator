@@ -21,7 +21,7 @@ function renderPropsLayer(newLayer, newLayerLevel, activityPropsContainer) {
     </div>
 
     <div class="activity-moreItems-container">
-      <label for="${newLayer}-moreItems">More items?</label>
+      <label for="${newLayer}-moreItems">Is Object?</label>
 
       <div class="more-items">
         <div>

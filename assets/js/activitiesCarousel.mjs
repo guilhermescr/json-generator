@@ -10,17 +10,39 @@ function getActivityClientWidthForCarouselSlide() {
 }
 
 function checkIfScrollIsDone() {
-  let scrollLeftValues = [];
-
-  for (let i = 0; i < ACTIVITIES_CONTAINER.children.length; i++) {
-    scrollLeftValues.push(ACTIVITY_CLIENT_WIDTH * i);
-  }
+  let scrollLeftValues = getScrollValues();
 
   for (let scrollLeftValue of scrollLeftValues) {
     if (scrollLeftValue === ACTIVITIES_CONTAINER.scrollLeft) {
       isScrollAllowed = true;
     }
   }
+}
+
+function getScrollValues() {
+  let scrollLeftValues = [];
+
+  for (let i = 0; i < ACTIVITIES_CONTAINER.children.length; i++) {
+    scrollLeftValues.push(ACTIVITY_CLIENT_WIDTH * i);
+  }
+
+  return scrollLeftValues;
+}
+
+function findClosestNumberToScrollLeft(scrollLeftValue, scrollLeftValues) {
+  let closestNumber = scrollLeftValues[0];
+  let closestDistance = Math.abs(scrollLeftValue - closestNumber);
+
+  for (const scrollValue of scrollLeftValues) {
+    const distance = Math.abs(scrollLeftValue - scrollValue);
+
+    if (distance < closestDistance) {
+      closestNumber = scrollValue;
+      closestDistance = distance;
+    }
+  }
+
+  return closestNumber;
 }
 
 function checkArrowClassState(direction, newWidth, isNotScrolling = false) {
@@ -103,7 +125,17 @@ document.querySelectorAll('.carousel-arrow-button').forEach(slideButton => {
   slideButton.addEventListener('click', handleSlideButtonClick);
 });
 
-window.onresize = getActivityClientWidthForCarouselSlide;
+window.onresize = () => {
+  getActivityClientWidthForCarouselSlide();
+
+  ACTIVITIES_CONTAINER.scrollTo(
+    findClosestNumberToScrollLeft(
+      ACTIVITIES_CONTAINER.scrollLeft,
+      getScrollValues()
+    ),
+    0
+  );
+};
 
 window.onkeydown = ({ key }) => {
   if (key === 'ArrowLeft') {
