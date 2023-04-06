@@ -1,4 +1,5 @@
 import { checkArrowClassState, slideToTheLeft } from './activitiesCarousel.mjs';
+import { removeActivityCode } from './jsonPreview.mjs';
 
 function sortActivitiesIndex(activityIndex) {
   const ACTIVITIES_CONTAINER = document.querySelector('.activities');
@@ -37,17 +38,20 @@ function sortActivitiesIndex(activityIndex) {
 
 function deleteActivity() {
   const ACTIVITIES_CONTAINER = document.querySelector('.activities');
-  let activityIndex = Number(this.parentElement.id.replace('a', ''));
+  const activityId = this.parentElement.id;
+  let activityIndex = Number(activityId.replace('a', ''));
 
   slideToTheLeft();
 
   let previousElement = this.parentElement.previousElementSibling;
+
   ACTIVITIES_CONTAINER.removeChild(this.parentElement);
 
   if (previousElement.id === ACTIVITIES_CONTAINER.lastElementChild.id) {
     checkArrowClassState('right', 0, true);
   }
   sortActivitiesIndex(activityIndex);
+  removeActivityCode(activityId);
 }
 
 function addDeleteActivityListener() {

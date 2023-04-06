@@ -10,6 +10,10 @@ import {
   sortLayers
 } from './layerMethods.mjs';
 import renderPropsLayer from './renderPropsLayers.mjs';
+import {
+  addActivityCodeInputListener,
+  addActivityCode
+} from './jsonPreview.mjs';
 
 const JSON_GENERATOR_CONTAINER = document.getElementById('json-generator');
 const ADD_ACTIVITY_BUTTON = document.getElementById('add-activities-button');
@@ -79,6 +83,7 @@ function addActivity() {
   ACTIVITIES_CONTAINER.scrollTo(ACTIVITIES_CONTAINER.scrollWidth, 0);
   checkArrowClassState('right', ACTIVITIES_CONTAINER.scrollWidth);
   addMoreItems(`a${ACTIVITY_INDEX}`);
+  addActivityCode(`a${ACTIVITY_INDEX}`, false, '');
   addDeleteActivityListener();
 }
 
@@ -134,12 +139,17 @@ function addPropsInActivity() {
   let newLayerLevel = previousLayerLevel + 1;
   let newLayer = `${previousLayer}n${newLayerLevel}p1`;
 
-  if (this.id.includes('no')) {
+  if (
+    this.id.includes('no') &&
+    document.getElementById(`${previousLayer}n${newLayerLevel}`)
+  ) {
     removeChildrenProps(activity_props_container, previousLayer, newLayerLevel);
+    // removeLayerCode(`${previousLayer}n${newLayerLevel}`);
 
     if (!activity_props_container.children.length) {
       activity_props_container.classList.add('hide');
     }
+
     activity_content_container.classList.remove('hide');
   }
 
@@ -159,7 +169,7 @@ function addPropsInActivity() {
   }
 }
 
-function removePropsInActivity() {
+function removeAndSortPropsInActivity() {
   let propLayer = this.parentElement.parentElement;
 
   let propString = this.parentElement.id;
@@ -258,7 +268,7 @@ function removePropsInActivity() {
 
 function addDeletePropButtonListener() {
   document.querySelectorAll('.delete-prop-button').forEach(deletePropButton => {
-    deletePropButton.addEventListener('click', removePropsInActivity);
+    deletePropButton.addEventListener('click', removeAndSortPropsInActivity);
   });
 }
 
@@ -282,17 +292,23 @@ function addMoreItems(activityIndex) {
     .forEach(morePropsInputRadio => {
       morePropsInputRadio.addEventListener('click', addPropsInActivity);
     });
+
+  ACTIVITIES_CONTENT.forEach(activity_content => {
+    activity_content.addEventListener('input', resizeHeight);
+  });
 }
 
 document.body.onload = () => {
   getActivityClientWidthForCarouselSlide();
   addMoreItems('a1');
+  addActivityCodeInputListener('a1');
 };
 
 ADD_ACTIVITY_BUTTON.addEventListener('click', addActivity);
 
-ACTIVITIES_CONTENT.forEach(activity_content => {
-  activity_content.addEventListener('input', resizeHeight);
-});
-
-export { addMoreItems, addDeletePropButtonListener, JSON_GENERATOR_CONTAINER };
+export {
+  addMoreItems,
+  addDeletePropButtonListener,
+  getActivityIndex,
+  JSON_GENERATOR_CONTAINER
+};

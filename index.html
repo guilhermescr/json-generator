@@ -149,22 +149,37 @@
         </svg>
 
         <h2 class="json-heading">JSON Preview</h2>
-        <code>
-          <pre>
-{
-  <p class="prop initialTitle">"initialTitle"</p>: {
-    <p class="prop">"solicitacao"</p>: {
-      <p class="prop">"a1n2p1"</p>: <p class="value string">"test"</p>
+        <pre><code id="json-preview-code">{
+  <span class="prop" id="initial-title-code">"initialTitle"</span>: {
+    <span id="activities-code"><span id="a1-code"><span class="prop" id="a1-code-prop">"a1"</span>: {
+      <span class="prop">"a1n2p1"</span>: <span class="value string">"É verdade este bilhete."</span>
+    }</span></span>
+  }
+}</code></pre>
+        <!-- <pre><code id="json-preview-code">{
+  <span class="prop">"initialTitle"</span>: {
+    <span class="prop">"a1"</span>: {
+      <span class="prop">"a1n2p1"</span>: <span class="value string">"É verdade este bilhete."</span>
     },
-    <p class="prop">"validacaoInterna"</p>: {
-      <p class="prop">"a2n2p1"</p>: <p class="value string">"test"</p>
+    <span class="prop">"a2"</span>: {
+      <span class="prop">"a2n2p1"</span>: {
+        <span class="prop">"a2n2p1n3p1"</span>: <span class="value nonstring">false</span>
+      }
     }
   }
-}
-</pre>
-        </code>
+}</code></pre> -->
       </section>
     </main>
+
+    <!--
+    <span class="prop initialTitle">"initialTitle"</span>: {
+      <div id="a1-code">
+        <span class="prop" id="a1-code-prop">"a1"</span>: {
+            <span class="prop" id="a1n2p1-code-prop">"a1n2p1"</span>: <span class="value string" id="a1n2p1-code-value">"Texto gigante, que que eu façoooooooooooo com issoooooooooooooooooooooooooooooooo!!"</span>
+        }</div>
+      }
+
+    -->
 
     <script type="module" src="assets/js/main.js"></script>
   </body>
