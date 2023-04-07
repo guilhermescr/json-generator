@@ -1,4 +1,9 @@
-import { addDeletePropButtonListener, addMoreItems } from './main.js';
+import { addPropCodeInPropLayer } from './jsonPreview.mjs';
+import {
+  addDeletePropButtonListener,
+  addMoreItems,
+  getPropData
+} from './main.js';
 
 export default function addMorePropsInPropLayer(
   propName,
@@ -82,21 +87,14 @@ export default function addMorePropsInPropLayer(
 function handleAddMorePropsButtonClick() {
   let previousPropTitle = this.previousElementSibling.children[0].innerHTML;
 
-  let previousPropTitleNumbers = previousPropTitle.match(/p[0-9]+/gi);
-
-  let latestPropIndex =
-    previousPropTitleNumbers[previousPropTitleNumbers.length - 1];
-
-  let previousPropTitleNumber = Number(latestPropIndex.replace(/p/i, ''));
-
-  let newPropNumber = previousPropTitleNumber + 1;
-
-  let newPropTitle = `${previousPropTitle.slice(
-    0,
-    previousPropTitle.length - latestPropIndex.length
-  )}P${newPropNumber}`;
+  const { newPropTitle } = getPropData(previousPropTitle);
 
   addMorePropsInPropLayer(newPropTitle, this.parentElement, this);
+  addPropCodeInPropLayer(
+    previousPropTitle.toLowerCase(),
+    newPropTitle.toLowerCase(),
+    false
+  );
 }
 
 function addClickListenerToAddMorePropsButton() {

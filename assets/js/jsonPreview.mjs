@@ -1,36 +1,48 @@
-function addActivityCodeInputListener(activityIndex) {
+function addPropCodeInputListener(activityId) {
   document
-    .getElementById(`${activityIndex}-title`)
+    .getElementById(`${activityId}-title`)
     .addEventListener('input', ({ target }) => {
-      let activityLayer = document.getElementById(activityIndex);
+      let activityLayer = document.getElementById(activityId);
       let activityLayerH3 = activityLayer.firstElementChild;
       let h3Value =
         target.value.charAt(0).toUpperCase() +
         target.value.slice(1, target.value.length);
 
       let code_prop_title_input = document.getElementById(
-        `${activityIndex}-code-prop`
+        `${activityId}-code-prop`
       );
 
-      if (target.value) {
-        activityLayerH3.innerHTML = h3Value;
+      if (!activityId.includes('p')) {
+        if (target.value) {
+          activityLayerH3.innerHTML = h3Value;
 
-        code_prop_title_input.innerHTML = `"${target.value}"`;
+          code_prop_title_input.innerHTML = `"${target.value}"`;
+        } else {
+          activityLayerH3.innerHTML = `Activity ${activityLayer.id.replace(
+            'a',
+            ''
+          )}`;
+
+          code_prop_title_input.innerHTML = `"${activityId}"`;
+        }
       } else {
-        activityLayerH3.innerHTML = `Activity ${activityLayer.id.replace(
-          'a',
-          ''
-        )}`;
+        if (target.value) {
+          activityLayerH3.innerHTML = h3Value;
 
-        code_prop_title_input.innerHTML = `"${activityIndex}"`;
+          code_prop_title_input.innerHTML = `"${target.value}"`;
+        } else {
+          activityLayerH3.innerHTML = activityId.toUpperCase();
+
+          code_prop_title_input.innerHTML = `"${activityId}"`;
+        }
       }
     });
 
   document
-    .getElementById(`${activityIndex}-content`)
+    .getElementById(`${activityId}-content`)
     .addEventListener('input', ({ target }) => {
       let code_prop_content_textarea = document.getElementById(
-        `${activityIndex}-code-value`
+        `${activityId}-code-value`
       );
 
       code_prop_content_textarea.innerHTML = `"${target.value}"`;
@@ -50,7 +62,7 @@ function addActivityCode(activityId, isObject, value) {
   }`;
   }
 
-  addActivityCodeInputListener(activityId);
+  addPropCodeInputListener(activityId);
 }
 
 function sortActivitiesCode(activityId) {
@@ -111,6 +123,79 @@ function removeActivityCode(activityId) {
   sortActivitiesCode(activityId);
 }
 
+function getIndentation(layerLevel) {
+  const blankSpaceIncrement = '  ';
+  let blankSpace = '';
+
+  if (layerLevel > 1) {
+    for (
+      let blankSpaceIterator = 1;
+      blankSpaceIterator < layerLevel;
+      blankSpaceIterator++
+    ) {
+      blankSpace += blankSpaceIncrement;
+    }
+  }
+  return blankSpace;
+}
+
+function togglePropLayerCode(
+  previousLayerLevel,
+  previousLayer,
+  newProp,
+  isObject
+) {
+  const activityCodeValue = document.querySelector(
+    `#${previousLayer}-code-value`
+  );
+  let blankSpace = getIndentation(previousLayerLevel);
+
+  if (!isObject) {
+    activityCodeValue.innerHTML = '""';
+
+    activityCodeValue.classList.add('string');
+    activityCodeValue.classList.remove('object');
+  } else {
+    activityCodeValue.innerHTML = `{<span id="${newProp}-code">
+      ${blankSpace}<span class="prop" id="${newProp}-code-prop">"${newProp}"</span>: <span class="value string" id="${newProp}-code-value">""</span>
+    ${blankSpace}</span>}`;
+
+    activityCodeValue.classList.remove('string');
+    activityCodeValue.classList.add('object');
+    addPropCodeInputListener(newProp);
+  }
+}
+
+function addPropCodeInPropLayer(propLayer, newPropTitle, isObject) {
+  /*
+  let previousLayerLevel = getPreviousLayerLevel(propLayer);
+  let blankSpace = getIndentation(previousLayerLevel);
+  */
+
+  const PROP_LAYER_CODE_CONTAINER = document.getElementById(
+    `${propLayer}-code`
+  ).parentElement;
+
+  console.log(PROP_LAYER_CODE_CONTAINER, newPropTitle);
+
+  //${blankSpace}
+  let value = '';
+
+  if (!isObject) {
+    PROP_LAYER_CODE_CONTAINER.innerHTML += `<span id="${newPropTitle}-comma">,</span>
+    <span id="${newPropTitle}-code"><span class="prop" id="${newPropTitle}-code-prop">"${newPropTitle}"</span>: <span class="value string" id="${newPropTitle}-code-value">"${value}"</span></span>`;
+  } /* else {
+    PROP_LAYER_CODE_CONTAINER.innerHTML = `<span id="${propLayer}-comma">,</span>
+    <span id="${propLayer}-code"><span class="prop" id="${propLayer}-code-prop">"${propLayer}"</span>: {
+      <span class="prop">"a1n2p1"</span>: <span class="value string">""</span></span>
+  }`;
+  }
+  */
+
+  return;
+  addPropCodeInputListener(activityId);
+}
+
 document
   .getElementById('activities-title')
   .addEventListener('input', ({ target }) => {
@@ -124,4 +209,10 @@ document
     }
   });
 
-export { addActivityCodeInputListener, addActivityCode, removeActivityCode };
+export {
+  addPropCodeInputListener,
+  addPropCodeInPropLayer,
+  addActivityCode,
+  removeActivityCode,
+  togglePropLayerCode
+};

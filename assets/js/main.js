@@ -11,8 +11,9 @@ import {
 } from './layerMethods.mjs';
 import renderPropsLayer from './renderPropsLayers.mjs';
 import {
-  addActivityCodeInputListener,
-  addActivityCode
+  addPropCodeInputListener,
+  addActivityCode,
+  togglePropLayerCode
 } from './jsonPreview.mjs';
 
 const JSON_GENERATOR_CONTAINER = document.getElementById('json-generator');
@@ -121,13 +122,13 @@ function removeChildrenProps(
 
 function addPropsInActivity() {
   const { name: activity } = this;
-  const activityIndex = getActivityIndex(activity);
+  const activityId = getActivityIndex(activity);
 
   const activity_content_container =
     this.parentElement.parentElement.parentElement.nextElementSibling;
 
   const activity_props_container = document
-    .querySelector(`#${activityIndex}`)
+    .querySelector(`#${activityId}`)
     .querySelector('.activity-props');
 
   let previousLayer = activity.replace(
@@ -144,7 +145,7 @@ function addPropsInActivity() {
     document.getElementById(`${previousLayer}n${newLayerLevel}`)
   ) {
     removeChildrenProps(activity_props_container, previousLayer, newLayerLevel);
-    // removeLayerCode(`${previousLayer}n${newLayerLevel}`);
+    togglePropLayerCode(previousLayerLevel, previousLayer, newLayer, false);
 
     if (!activity_props_container.children.length) {
       activity_props_container.classList.add('hide');
@@ -160,10 +161,13 @@ function addPropsInActivity() {
     activity_props_container.classList.remove('hide');
 
     renderPropsLayer(newLayer, newLayerLevel, activity_props_container);
+    setTimeout(() => {
+      togglePropLayerCode(previousLayerLevel, previousLayer, newLayer, true);
+    }, 10);
   }
 
   if (newLayer.includes('p')) {
-    sortLayers(activity_props_container);
+    sortLayers(activity_props_container, newLayer);
     addClickListenerToAddMorePropsButton();
     addDeletePropButtonListener();
   }
@@ -286,9 +290,9 @@ function resizeHeight() {
   }
 }
 
-function addMoreItems(activityIndex) {
+function addMoreItems(activityId) {
   document
-    .querySelectorAll(`input[name="${activityIndex}-item"]`)
+    .querySelectorAll(`input[name="${activityId}-item"]`)
     .forEach(morePropsInputRadio => {
       morePropsInputRadio.addEventListener('click', addPropsInActivity);
     });
@@ -298,10 +302,30 @@ function addMoreItems(activityIndex) {
   });
 }
 
+function getPropData(previousPropTitle) {
+  let previousPropTitleNumbers = previousPropTitle.match(/p[0-9]+/gi);
+  let latestPropIndex =
+    previousPropTitleNumbers[previousPropTitleNumbers.length - 1];
+  let previousPropTitleNumber = Number(latestPropIndex.replace(/p/i, ''));
+  let newPropNumber = previousPropTitleNumber + 1;
+
+  let newPropTitle = `${previousPropTitle.slice(
+    0,
+    previousPropTitle.length - latestPropIndex.length
+  )}P${newPropNumber}`;
+
+  return {
+    latestPropIndex,
+    previousPropTitleNumber,
+    newPropNumber,
+    newPropTitle
+  };
+}
+
 document.body.onload = () => {
   getActivityClientWidthForCarouselSlide();
   addMoreItems('a1');
-  addActivityCodeInputListener('a1');
+  addPropCodeInputListener('a1');
 };
 
 ADD_ACTIVITY_BUTTON.addEventListener('click', addActivity);
@@ -310,5 +334,6 @@ export {
   addMoreItems,
   addDeletePropButtonListener,
   getActivityIndex,
+  getPropData,
   JSON_GENERATOR_CONTAINER
 };
