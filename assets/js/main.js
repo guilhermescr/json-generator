@@ -13,7 +13,9 @@ import renderPropsLayer from './renderPropsLayers.mjs';
 import {
   addPropCodeInputListener,
   addActivityCode,
-  togglePropLayerCode
+  togglePropLayerCode,
+  removePropCodeInPropLayer,
+  sortPropsCodeId
 } from './jsonPreview.mjs';
 
 const JSON_GENERATOR_CONTAINER = document.getElementById('json-generator');
@@ -84,7 +86,7 @@ function addActivity() {
   ACTIVITIES_CONTAINER.scrollTo(ACTIVITIES_CONTAINER.scrollWidth, 0);
   checkArrowClassState('right', ACTIVITIES_CONTAINER.scrollWidth);
   addMoreItems(`a${ACTIVITY_INDEX}`);
-  addActivityCode(`a${ACTIVITY_INDEX}`, false, '');
+  addActivityCode(`a${ACTIVITY_INDEX}`);
   addDeleteActivityListener();
 }
 
@@ -273,7 +275,8 @@ function removeAndSortPropsInActivity() {
     });
   }
 
-  // sortPropsIndex();
+  removePropCodeInPropLayer(propString);
+  sortPropsCodeId(propString);
 }
 
 function addDeletePropButtonListener() {

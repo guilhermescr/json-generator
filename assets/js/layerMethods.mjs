@@ -50,7 +50,6 @@ function sortLayers(activity_props_container) {
 
   let propLayers = getPropLayers(layersIds);
 
-  // activity_props_container.innerHTML = '';
   const layersValues = [];
   let sortedLayersString = '';
 
