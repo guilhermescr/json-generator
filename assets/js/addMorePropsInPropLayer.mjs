@@ -15,7 +15,7 @@ export default function addMorePropsInPropLayer(
   const newProp = document.createElement('div');
   newProp.id = propName;
   newProp.innerHTML = `
-  <h4>${propName.toUpperCase()}</h4>
+  <h4 id="${propName.toUpperCase()}">${propName.toUpperCase()}</h4>
 
   <button type="button" class="delete-button delete-prop-button">
     Delete Prop
@@ -85,12 +85,13 @@ export default function addMorePropsInPropLayer(
 }
 
 function handleAddMorePropsButtonClick() {
-  let previousPropTitle = this.previousElementSibling.children[0].innerHTML;
+  let previousPropTitle = this.previousElementSibling.children[0].id;
 
-  const { newPropTitle } = getPropData(previousPropTitle);
+  const { previousPropLayer, newPropTitle } = getPropData(previousPropTitle);
 
   addMorePropsInPropLayer(newPropTitle, this.parentElement, this);
   addPropCodeInPropLayer(
+    previousPropLayer.toLowerCase(),
     previousPropTitle.toLowerCase(),
     newPropTitle.toLowerCase(),
     false

@@ -138,14 +138,14 @@ function addPropsInActivity() {
   let previousLayerLevel = getPreviousLayerLevel(previousLayer);
 
   let newLayerLevel = previousLayerLevel + 1;
-  let newLayer = `${previousLayer}n${newLayerLevel}p1`;
+  let newProp = `${previousLayer}n${newLayerLevel}p1`;
 
   if (
     this.id.includes('no') &&
     document.getElementById(`${previousLayer}n${newLayerLevel}`)
   ) {
     removeChildrenProps(activity_props_container, previousLayer, newLayerLevel);
-    togglePropLayerCode(previousLayerLevel, previousLayer, newLayer, false);
+    togglePropLayerCode(previousLayerLevel, previousLayer, '', newProp, false);
 
     if (!activity_props_container.children.length) {
       activity_props_container.classList.add('hide');
@@ -154,20 +154,26 @@ function addPropsInActivity() {
     activity_content_container.classList.remove('hide');
   }
 
-  if (document.getElementById(newLayer) !== null) return;
+  if (document.getElementById(newProp) !== null) return;
 
   if (this.id.includes('yes')) {
     activity_content_container.classList.add('hide');
     activity_props_container.classList.remove('hide');
 
-    renderPropsLayer(newLayer, newLayerLevel, activity_props_container);
+    renderPropsLayer(newProp, newLayerLevel, activity_props_container);
     setTimeout(() => {
-      togglePropLayerCode(previousLayerLevel, previousLayer, newLayer, true);
+      togglePropLayerCode(
+        previousLayerLevel,
+        previousLayer,
+        `${previousLayer}n${newLayerLevel}`,
+        newProp,
+        true
+      );
     }, 10);
   }
 
-  if (newLayer.includes('p')) {
-    sortLayers(activity_props_container, newLayer);
+  if (newProp.includes('p')) {
+    sortLayers(activity_props_container, newProp);
     addClickListenerToAddMorePropsButton();
     addDeletePropButtonListener();
   }
@@ -309,13 +315,16 @@ function getPropData(previousPropTitle) {
   let previousPropTitleNumber = Number(latestPropIndex.replace(/p/i, ''));
   let newPropNumber = previousPropTitleNumber + 1;
 
-  let newPropTitle = `${previousPropTitle.slice(
+  let previousPropLayer = `${previousPropTitle.slice(
     0,
     previousPropTitle.length - latestPropIndex.length
-  )}P${newPropNumber}`;
+  )}`;
+
+  let newPropTitle = `${previousPropLayer}P${newPropNumber}`;
 
   return {
     latestPropIndex,
+    previousPropLayer,
     previousPropTitleNumber,
     newPropNumber,
     newPropTitle

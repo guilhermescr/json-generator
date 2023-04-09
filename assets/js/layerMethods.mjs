@@ -1,3 +1,4 @@
+import { addPropCodeInputListener } from './jsonPreview.mjs';
 import { addMoreItems } from './main.js';
 
 function getPreviousLayerLevel(layerLevel) {
@@ -119,9 +120,8 @@ function sortLayers(activity_props_container) {
           ).checked = true;
         }
 
-        addMoreItems(
-          `${propContainer.querySelector('h4').innerHTML.toLowerCase()}`
-        );
+        addPropCodeInputListener(propContainer.id);
+        addMoreItems(`${propContainer.querySelector('h4').id.toLowerCase()}`);
         ++propIndex;
       });
   });

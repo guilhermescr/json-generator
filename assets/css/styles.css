@@ -347,7 +347,7 @@ p {
 }
 
 .delete-prop-button {
-  top: -10px;
+  top: -5px;
 }
 
 .more-props-level {
@@ -404,6 +404,8 @@ p {
 pre {
   font-family: 'Courier New', Courier, monospace;
   line-height: 1.5;
+  word-break: break-all;
+  white-space: pre-wrap;
 }
 
 #json-preview-code {

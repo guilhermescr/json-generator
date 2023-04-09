@@ -142,6 +142,7 @@ function getIndentation(layerLevel) {
 function togglePropLayerCode(
   previousLayerLevel,
   previousLayer,
+  newLayer,
   newProp,
   isObject
 ) {
@@ -156,44 +157,45 @@ function togglePropLayerCode(
     activityCodeValue.classList.add('string');
     activityCodeValue.classList.remove('object');
   } else {
-    activityCodeValue.innerHTML = `{<span id="${newProp}-code">
-      ${blankSpace}<span class="prop" id="${newProp}-code-prop">"${newProp}"</span>: <span class="value string" id="${newProp}-code-value">""</span>
-    ${blankSpace}</span>}`;
+    activityCodeValue.innerHTML = `<span id="${previousLayer}-opening-curly-bracket">{</span><span id="${newLayer}-code">
+      ${blankSpace}<span class="prop" id="${newProp}-code-prop">"${newProp}"</span>: <span class="value string" id="${newProp}-code-value">""</span></span>
+    ${blankSpace}<span id="${previousLayer}-closing-curly-bracket">}</span>`;
 
     activityCodeValue.classList.remove('string');
     activityCodeValue.classList.add('object');
-    addPropCodeInputListener(newProp);
   }
 }
 
-function addPropCodeInPropLayer(propLayer, newPropTitle, isObject) {
-  /*
-  let previousLayerLevel = getPreviousLayerLevel(propLayer);
-  let blankSpace = getIndentation(previousLayerLevel);
-  */
-
+function addPropCodeInPropLayer(
+  previousPropLayer,
+  previousPropTitle,
+  newPropTitle,
+  isObject
+) {
   const PROP_LAYER_CODE_CONTAINER = document.getElementById(
-    `${propLayer}-code`
-  ).parentElement;
-
-  console.log(PROP_LAYER_CODE_CONTAINER, newPropTitle);
-
-  //${blankSpace}
-  let value = '';
+    `${previousPropLayer}-code`
+  );
+  let propLayers = previousPropLayer.match(/n[0-9]+/g);
+  let previousLayerLevel = Number(
+    propLayers[propLayers.length - 1].replace('n', '')
+  );
+  let blankSpace = getIndentation(previousLayerLevel);
 
   if (!isObject) {
     PROP_LAYER_CODE_CONTAINER.innerHTML += `<span id="${newPropTitle}-comma">,</span>
-    <span id="${newPropTitle}-code"><span class="prop" id="${newPropTitle}-code-prop">"${newPropTitle}"</span>: <span class="value string" id="${newPropTitle}-code-value">"${value}"</span></span>`;
+    ${blankSpace}<span class="prop" id="${newPropTitle}-code-prop">"${newPropTitle}"</span>: <span class="value string" id="${newPropTitle}-code-value">""</span>`;
   } /* else {
     PROP_LAYER_CODE_CONTAINER.innerHTML = `<span id="${propLayer}-comma">,</span>
-    <span id="${propLayer}-code"><span class="prop" id="${propLayer}-code-prop">"${propLayer}"</span>: {
+    ${blankSpace}<span id="${newPropTitle}-code"><span class="prop" id="${newPropTitle}-code-prop">"${newPropTitle}"</span>: {
       <span class="prop">"a1n2p1"</span>: <span class="value string">""</span></span>
-  }`;
+    }`;
+    PROP_LAYER_CODE_CONTAINER.innerHTML = `<span id="${previousLayer}-opening-curly-bracket">{</span><span id="${newLayer}-code">
+      ${blankSpace}<span class="prop" id="${newProp}-code-prop">"${newProp}"</span>: <span class="value string" id="${newProp}-code-value">""</span></span>
+    ${blankSpace}<span id="${previousLayer}-closing-curly-bracket">}</span>`;
   }
   */
 
-  return;
-  addPropCodeInputListener(activityId);
+  addPropCodeInputListener(newPropTitle);
 }
 
 document

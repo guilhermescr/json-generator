@@ -13,7 +13,7 @@ function renderPropsLayer(newLayer, newLayerLevel, activityPropsContainer) {
 
   propsLayer.innerHTML = `
   <div id="${newLayer}">
-    <h4>${newLayer.toUpperCase()}</h4>
+    <h4 id="${newLayer.toUpperCase()}">${newLayer.toUpperCase()}</h4>
 
     <div class="activity-title-container">
       <label for="${newLayer}-title">Title:</label>
