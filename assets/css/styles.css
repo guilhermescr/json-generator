@@ -15,6 +15,36 @@
 body {
   background-color: #2c3333;
   padding-block: 30px;
+  position: relative;
+}
+
+@keyframes alertAnimation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.alert-animation {
+  animation: alertAnimation 0.2s linear;
+}
+
+.alert-message-container {
+  background-color: #54ad54;
+  border: 1px solid #5bf85b;
+  border-radius: 5px;
+  color: #fff;
+  max-width: 230px;
+  padding: 10px;
+  position: absolute;
+  left: 50%;
+  text-align: center;
+  top: 30px;
+  transform: translateX(-50%);
+  transition: all 0.15s ease-out;
+  width: 100%;
 }
 
 header {
@@ -379,7 +409,9 @@ p {
   width: 100%;
 }
 
-#clipboard-icon {
+#clipboard-button {
+  background-color: transparent;
+  border: none;
   cursor: pointer;
   height: 40px;
   position: absolute;
@@ -389,11 +421,11 @@ p {
   width: 40px;
 }
 
-#clipboard-icon:hover {
+#clipboard-button:hover {
   stroke: #fff;
 }
 
-#clipboard-icon:active {
+#clipboard-button:active {
   opacity: 0.9;
 }
 
@@ -458,7 +490,7 @@ pre {
 }
 
 @media (max-width: 540px) {
-  #clipboard-icon {
+  #clipboard-button {
     height: 35px;
     width: 35px;
   }

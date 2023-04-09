@@ -92,9 +92,7 @@ function handleAddMorePropsButtonClick() {
   addMorePropsInPropLayer(newPropTitle, this.parentElement, this);
   addPropCodeInPropLayer(
     previousPropLayer.toLowerCase(),
-    previousPropTitle.toLowerCase(),
-    newPropTitle.toLowerCase(),
-    false
+    newPropTitle.toLowerCase()
   );
 }
 

@@ -17,6 +17,7 @@ import {
   removePropCodeInPropLayer,
   sortPropsCodeId
 } from './jsonPreview.mjs';
+import * as getJSON from './getJSON.mjs';
 
 const JSON_GENERATOR_CONTAINER = document.getElementById('json-generator');
 const ADD_ACTIVITY_BUTTON = document.getElementById('add-activities-button');
@@ -183,7 +184,6 @@ function addPropsInActivity() {
 
 function removeAndSortPropsInActivity() {
   let propLayer = this.parentElement.parentElement;
-
   let propString = this.parentElement.id;
   let props = propString.match(/p[0-9]+/g);
   let deletedProp = props[props.length - 1];
@@ -205,6 +205,15 @@ function removeAndSortPropsInActivity() {
     `#${getActivityIndex(propLayerChildren[0].id)} .activity-props`
   );
 
+  if (deletedPropIndex > propLayerChildren.length) {
+    [...activity_props_container.children].forEach(activityPropLevels => {
+      if (activityPropLevels.id.includes(propString)) {
+        activityPropLevels.remove();
+      }
+    });
+  }
+
+  // this for() sorts the props
   for (
     let propIndexIterator = deletedPropIndex;
     propIndexIterator <= propLayerChildren.length;
@@ -215,14 +224,6 @@ function removeAndSortPropsInActivity() {
     let previousPropId = propContainer.id;
     propContainer.id = `${propWithEmptyP}${propIndexIterator}`;
 
-    /*
-    document.querySelectorAll('*').forEach(element => {
-      if (element?.id?.includes(previousPropId)) {
-        console.log(previousPropId, element);
-      }
-    });
-    */
-
     propContainer.querySelectorAll('*').forEach(propContainerChild => {
       propContainerChild.getAttributeNames().map(attribute => {
         let attributeValue = propContainerChild.getAttribute(attribute);
@@ -232,6 +233,10 @@ function removeAndSortPropsInActivity() {
             attribute,
             attributeValue.replace(previousPropId, propContainer.id)
           );
+        }
+
+        if (attributeValue.includes(previousPropId.toUpperCase())) {
+          propContainerChild.id = propContainer.id.toUpperCase();
         }
       });
 

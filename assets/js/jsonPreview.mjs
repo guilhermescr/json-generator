@@ -161,12 +161,7 @@ function togglePropLayerCode(
   }
 }
 
-function addPropCodeInPropLayer(
-  previousPropLayer,
-  previousPropTitle,
-  newPropTitle,
-  isObject
-) {
+function addPropCodeInPropLayer(previousPropLayer, newPropTitle) {
   const PROP_LAYER_CODE_CONTAINER = document.getElementById(
     `${previousPropLayer}-code`
   );
@@ -176,19 +171,8 @@ function addPropCodeInPropLayer(
   );
   let blankSpace = getIndentation(previousLayerLevel);
 
-  if (!isObject) {
-    PROP_LAYER_CODE_CONTAINER.innerHTML += `<span id="${newPropTitle}-comma">,</span>
+  PROP_LAYER_CODE_CONTAINER.innerHTML += `<span id="${newPropTitle}-comma">,</span>
     ${blankSpace}<span class="prop" id="${newPropTitle}-code-prop">"${newPropTitle}"</span>: <span class="value string" id="${newPropTitle}-code-value">""</span>`;
-  } /* else {
-    PROP_LAYER_CODE_CONTAINER.innerHTML = `<span id="${propLayer}-comma">,</span>
-    ${blankSpace}<span id="${newPropTitle}-code"><span class="prop" id="${newPropTitle}-code-prop">"${newPropTitle}"</span>: {
-      <span class="prop">"a1n2p1"</span>: <span class="value string">""</span></span>
-    }`;
-    PROP_LAYER_CODE_CONTAINER.innerHTML = `<span id="${previousLayer}-opening-curly-bracket">{</span><span id="${newLayer}-code">
-      ${blankSpace}<span class="prop" id="${newProp}-code-prop">"${newProp}"</span>: <span class="value string" id="${newProp}-code-value">""</span></span>
-    ${blankSpace}<span id="${previousLayer}-closing-curly-bracket">}</span>`;
-  }
-  */
 
   addPropCodeInputListener(newPropTitle);
 }
@@ -199,8 +183,9 @@ function removePropCodeInPropLayer(activityId) {
   const ACTIVITY_CODE_VALUE = document.querySelector(
     `#${activityId}-code-value`
   );
+
   const PROP_LAYER_CONTAINER = PROP_COMMA.parentElement;
-  ACTIVITY_CODE_PROP.nextSibling.remove();
+  ACTIVITY_CODE_PROP?.nextSibling.remove();
   PROP_LAYER_CONTAINER.removeChild(PROP_COMMA);
   PROP_LAYER_CONTAINER.removeChild(ACTIVITY_CODE_PROP);
   PROP_LAYER_CONTAINER.removeChild(ACTIVITY_CODE_VALUE);
@@ -255,6 +240,28 @@ function sortPropsCodeId(activityId) {
       0,
       propValueId.length - propValuePIndexLength
     );
+    let propInput = document.getElementById(
+      `${propValueIdWithoutPropNumber}${propCodeIterator}-title`
+    );
+
+    document
+      .querySelectorAll(`#${propValueId}-code-value *`)
+      .forEach(propElementInsidePropValue => {
+        if (propElementInsidePropValue.id.includes(propValueId)) {
+          propElementInsidePropValue.id = propElementInsidePropValue.id.replace(
+            propValueId,
+            `${propValueIdWithoutPropNumber}${propCodeIterator}`
+          );
+        }
+
+        if (propElementInsidePropValue.id.includes('prop')) {
+          propElementInsidePropValue.innerHTML =
+            propElementInsidePropValue.innerHTML.replace(
+              propValueId,
+              `${propValueIdWithoutPropNumber}${propCodeIterator}`
+            );
+        }
+      });
 
     if (ACTIVITY_CODE_PROP.innerHTML.includes(propValueId)) {
       ACTIVITY_CODE_PROP.innerHTML = `"${propValueIdWithoutPropNumber}${propCodeIterator}"`;
@@ -265,6 +272,12 @@ function sortPropsCodeId(activityId) {
     propLayerChildren[
       propValueIndex
     ].id = `${propValueIdWithoutPropNumber}${propCodeIterator}-code-value`;
+
+    propInput.replaceWith(propInput.cloneNode(true));
+
+    addPropCodeInputListener(
+      `${propValueIdWithoutPropNumber}${propCodeIterator}`
+    );
   }
 }
 
