@@ -77,11 +77,6 @@ export default function addMorePropsInPropLayer(
   propLayer.insertBefore(newProp, addMorePropsButton);
   addMoreItems(`${propName}`);
   addDeletePropButtonListener();
-
-  let activity_container =
-    addMorePropsButton.parentElement.parentElement.parentElement;
-
-  activity_container.scrollTo(0, activity_container.scrollHeight);
 }
 
 function handleAddMorePropsButtonClick() {
@@ -94,6 +89,7 @@ function handleAddMorePropsButtonClick() {
     previousPropLayer.toLowerCase(),
     newPropTitle.toLowerCase()
   );
+  document.getElementById(newPropTitle.toLowerCase()).scrollIntoView();
 }
 
 function addClickListenerToAddMorePropsButton() {

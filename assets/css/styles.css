@@ -411,12 +411,28 @@ p {
   width: 100%;
 }
 
+#download-button,
 #clipboard-button {
   background-color: transparent;
   border: none;
   cursor: pointer;
-  height: 40px;
   position: absolute;
+}
+
+#download-button {
+  fill: #dfdfdf;
+  height: 33px;
+  right: 60px;
+  top: 14px;
+  width: 33px;
+}
+
+#download-button:hover {
+  fill: #fff;
+}
+
+#clipboard-button {
+  height: 40px;
   right: 10px;
   stroke: #dfdfdf;
   top: 10px;
@@ -427,6 +443,7 @@ p {
   stroke: #fff;
 }
 
+#download-button:active,
 #clipboard-button:active {
   opacity: 0.9;
 }
@@ -492,6 +509,13 @@ pre {
 }
 
 @media (max-width: 540px) {
+  #download-button {
+    height: 28px;
+    left: 10px;
+    right: auto;
+    width: 28px;
+  }
+
   #clipboard-button {
     height: 35px;
     width: 35px;

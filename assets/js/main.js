@@ -17,7 +17,7 @@ import {
   removePropCodeInPropLayer,
   sortPropsCodeId
 } from './jsonPreview.mjs';
-import * as getJSON from './getJSON.mjs';
+import * as copyJSON from './copyJSON.mjs';
 
 const JSON_GENERATOR_CONTAINER = document.getElementById('json-generator');
 const ADD_ACTIVITY_BUTTON = document.getElementById('add-activities-button');

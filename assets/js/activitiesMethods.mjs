@@ -11,17 +11,19 @@ function sortActivitiesIndex(activityIndex) {
   ) {
     let activitiesChildIndex = activityIndexIterator - 1;
     let activity = ACTIVITIES_CONTAINER.children[activitiesChildIndex];
-    let previousActivityIndex = activity.id;
+    let previousActivityId = activity.id;
     activity.id = `a${activityIndexIterator}`;
+    console.log(activity);
 
     activity.querySelectorAll('*').forEach(activityChildElement => {
       activityChildElement.getAttributeNames().map(attribute => {
         let attributeValue = activityChildElement.getAttribute(attribute);
 
-        if (attributeValue.includes(previousActivityIndex)) {
+        // h4 not found, fix it.
+        if (attributeValue.includes(previousActivityId)) {
           activityChildElement.setAttribute(
             attribute,
-            attributeValue.replace(previousActivityIndex, activity.id)
+            attributeValue.replace(previousActivityId, activity.id)
           );
         }
       });
@@ -31,6 +33,14 @@ function sortActivitiesIndex(activityIndex) {
         activityChildElement?.innerText.match(/[0-9]+/)
       ) {
         activityChildElement.innerHTML = `Activity ${activityIndexIterator}`;
+      }
+
+      if (activityChildElement.id.includes(previousActivityId.toUpperCase())) {
+        activityChildElement.id = activityChildElement.id.replace(
+          previousActivityId.toUpperCase(),
+          `A${activityIndexIterator}`
+        );
+        activityChildElement.innerHTML = activityChildElement.id;
       }
     });
   }
