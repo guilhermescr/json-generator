@@ -1,4 +1,4 @@
-import { getPropData } from './main.js';
+import { getPropData } from './layerMethods.mjs';
 
 function addPropCodeInputListener(activityId) {
   document

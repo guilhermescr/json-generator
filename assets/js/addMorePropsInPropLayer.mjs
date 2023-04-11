@@ -1,9 +1,6 @@
 import { addPropCodeInPropLayer } from './jsonPreview.mjs';
-import {
-  addDeletePropButtonListener,
-  addMoreItems,
-  getPropData
-} from './main.js';
+import { getPropData } from './layerMethods.mjs';
+import { addDeletePropButtonListener, addMoreItems } from './main.js';
 
 export default function addMorePropsInPropLayer(
   propName,

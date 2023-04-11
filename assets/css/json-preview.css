@@ -1,0 +1,86 @@
+.json-preview {
+  background-color: #1e1e1e;
+  border: 3px solid #014a6e;
+  border-radius: 5px;
+  color: #fff;
+  max-height: 450px;
+  overflow-y: auto;
+  padding: 30px;
+  padding-bottom: 10px;
+  position: relative;
+  width: 100%;
+}
+
+#clipboard-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  height: 40px;
+  position: absolute;
+  right: 10px;
+  stroke: #dfdfdf;
+  top: 10px;
+  width: 40px;
+}
+
+#clipboard-button:hover {
+  stroke: #fff;
+}
+
+#clipboard-button:active {
+  opacity: 0.9;
+}
+
+.json-preview .json-heading {
+  margin-bottom: 20px;
+}
+
+pre {
+  font-family: 'Courier New', Courier, monospace;
+  line-height: 1.5;
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+
+#json-preview-code {
+  display: block;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.json-preview::-webkit-scrollbar,
+#json-preview-code::-webkit-scrollbar {
+  height: 12px;
+  width: 10px;
+}
+
+.json-preview::-webkit-scrollbar-track,
+#json-preview-code::-webkit-scrollbar-track {
+  background: #292929;
+}
+
+.json-preview::-webkit-scrollbar-thumb,
+#json-preview-code::-webkit-scrollbar-thumb {
+  background-color: #c29203;
+  border-radius: 10px;
+  border: 1px solid #464444;
+}
+
+.prop {
+  color: #00aaff;
+}
+
+.value.string {
+  color: #7ed321;
+}
+
+.value.nonstring {
+  color: #d19a66;
+}
+
+@media (max-width: 540px) {
+  #clipboard-button {
+    height: 35px;
+    width: 35px;
+  }
+}

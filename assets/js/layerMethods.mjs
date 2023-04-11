@@ -9,6 +9,29 @@ function getPreviousLayerLevel(layerLevel) {
   else return 1;
 }
 
+function getPropData(previousPropTitle) {
+  let previousPropTitleNumbers = previousPropTitle.match(/p[0-9]+/gi);
+  let latestPropIndex =
+    previousPropTitleNumbers[previousPropTitleNumbers.length - 1];
+  let previousPropTitleNumber = Number(latestPropIndex.replace(/p/i, ''));
+  let newPropNumber = previousPropTitleNumber + 1;
+
+  let previousPropLayer = `${previousPropTitle.slice(
+    0,
+    previousPropTitle.length - latestPropIndex.length
+  )}`;
+
+  let newPropTitle = `${previousPropLayer}P${newPropNumber}`;
+
+  return {
+    latestPropIndex,
+    previousPropLayer,
+    previousPropTitleNumber,
+    newPropNumber,
+    newPropTitle
+  };
+}
+
 function getPropLayers(layersIds) {
   let propLayers = [];
 
@@ -126,4 +149,4 @@ function sortLayers(activity_props_container) {
   });
 }
 
-export { getPreviousLayerLevel, getAllPropContainers, sortLayers };
+export { getPreviousLayerLevel, getPropData, getAllPropContainers, sortLayers };
