@@ -104,6 +104,27 @@ function sortActivitiesCode(activityId) {
     if (activityCodeProp.innerHTML.includes(previousActivityId)) {
       activityCodeProp.innerHTML = `"a${activityCodeIterator}"`;
     }
+
+    ACTIVITIES_CODE_CONTAINER.querySelectorAll('*').forEach(
+      activityCodeChild => {
+        if (activityCodeChild.id.includes(previousActivityId)) {
+          activityCodeChild.id = activityCodeChild.id.replace(
+            previousActivityId,
+            `a${activityCodeIterator}`
+          );
+        }
+
+        if (
+          activityCodeChild.innerHTML.includes(`"${previousActivityId}`) &&
+          activityCodeChild.classList.contains('prop')
+        ) {
+          activityCodeChild.innerHTML = activityCodeChild.innerHTML.replace(
+            previousActivityId,
+            `a${activityCodeIterator}`
+          );
+        }
+      }
+    );
   }
 }
 

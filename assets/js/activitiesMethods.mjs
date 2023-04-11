@@ -13,7 +13,6 @@ function sortActivitiesIndex(activityIndex) {
     let activity = ACTIVITIES_CONTAINER.children[activitiesChildIndex];
     let previousActivityId = activity.id;
     activity.id = `a${activityIndexIterator}`;
-    console.log(activity);
 
     activity.querySelectorAll('*').forEach(activityChildElement => {
       activityChildElement.getAttributeNames().map(attribute => {
